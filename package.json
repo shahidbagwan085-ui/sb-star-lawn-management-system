@@ -1,0 +1,25 @@
+{
+  "name": "sb-star-lawn-backend",
+  "version": "1.0.0",
+  "description": "Backend API for SB STAR LAWN booking management system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["booking", "event-hall", "excel", "api"],
+  "author": "SB STAR LAWN",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "xlsx": "^0.18.5",
+    "multer": "^1.4.5-lts.1",
+    "body-parser": "^1.20.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+

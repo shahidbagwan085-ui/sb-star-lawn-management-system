@@ -1,0 +1,50 @@
+🚀 SB STAR LAWN - COMPLETE SETUP PROCESS
+==========================================
+
+📋 STEP-BY-STEP INSTRUCTIONS:
+
+1️⃣ INSTALL NODE.JS
+   - Go to: https://nodejs.org/
+   - Download and install Node.js
+   - Open Command Prompt and type: node --version
+   - Should show version number (like v18.17.0)
+
+2️⃣ INSTALL DEPENDENCIES
+   - Open Command Prompt in your project folder
+   - Type: npm install
+   - Wait for installation to complete
+
+3️⃣ START YOUR SERVER
+   - Type: npm start
+   - You should see: "SB STAR LAWN Backend Server running on port 3000"
+   - Excel files will be created automatically in 'data' folder
+
+4️⃣ ACCESS YOUR WEBSITE
+   - Open browser
+   - Go to: http://localhost:3000
+   - Your website should load with all features working
+
+5️⃣ TEST THE SYSTEM
+   - Fill out a booking form
+   - Check if data appears in Excel file
+   - Submit contact form
+   - Verify data is saved
+
+📊 EXCEL FILES CREATED:
+   - data/bookings.xlsx (All booking data)
+   - data/contacts.xlsx (Contact form submissions)
+
+🔧 TROUBLESHOOTING:
+   - If port 3000 is busy: npx kill-port 3000
+   - If Excel files not created: Check 'data' folder permissions
+   - If website not loading: Make sure server is running
+
+✅ SUCCESS INDICATORS:
+   - Server shows "running on port 3000"
+   - Excel files exist in 'data' folder
+   - Website loads at http://localhost:3000
+   - Booking form saves data to Excel
+
+🎉 YOUR SYSTEM IS READY!
+   All booking and contact data will be automatically saved to Excel files!
+

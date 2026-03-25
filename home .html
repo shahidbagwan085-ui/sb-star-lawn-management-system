@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SB STAR LAWN — Booking & Management</title>
+
+<!-- Google Font: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+  :root{
+    --ink:#0f172a;
+    --muted:#475569;
+    --bg:#0b1020;
+    --brand:#6a11cb;
+    --brand2:#2575fc;
+    --brand3:#22c55e;
+    --card:#ffffff;
+    --glass: rgba(255,255,255,.14);
+    --ring: rgba(37,117,252,.35);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body{
+    margin:0; font-family: 'Poppins', system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(101,84,192,.15), transparent 60%),
+      radial-gradient(1200px 800px at 110% 10%, rgba(37,117,252,.12), transparent 60%),
+      linear-gradient(180deg, #f8fafc, #eef2ff 120%);
+  }
+
+  /* Header / Nav */
+  header{
+    position: sticky; top:0; z-index: 20;
+    background: linear-gradient(90deg, #0b1020, #0f1530);
+    color:#fff; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 22px; box-shadow:0 10px 30px rgba(0,0,0,.28);
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.3px}
+  .brand i{color:#22d3ee}
+  nav {display:flex; gap:10px; align-items:center}
+  nav a{
+    color:#e2e8f0; text-decoration:none; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px;
+    transition:.25s transform,.25s background,.25s color;
+  }
+  nav a:hover{background:rgba(255,255,255,.08); transform:translateY(-1px); color:#fff}
+  .cta{
+    display: inline-flex; align-items: center; gap: 8px; /* For icon alignment */
+    font-weight: 700; /* Bold text */
+    background: linear-gradient(135deg, var(--brand), var(--brand2));
+    padding: 10px 16px; border-radius: 14px; color: #fff;
+    box-shadow: 0 10px 20px rgba(37, 117, 252, .35);
+    transition: .25s transform, .25s box-shadow, .25s filter;
+  }
+  .cta:hover {
+    background: linear-gradient(135deg, var(--brand), var(--brand2)); /* Keep gradient on hover */
+    box-shadow: 0 14px 28px rgba(37, 117, 252, .45); /* Enhanced shadow */
+    filter: brightness(1.05);
+  }
+  .menu-btn {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001; /* Above the nav panel */
+  }
+
+  /* Sections */
+  section{padding:60px 24px; max-width:1100px; margin:0 auto}
+  h2{font-size:28px; margin:0 0 16px; display:flex; align-items:center; gap:10px; color:#111827}
+  p{color:var(--muted)}
+  .card{
+    background:var(--card); border-radius:18px; padding:20px; box-shadow:0 20px 50px rgba(2,6,23,.08);
+  }
+  /* Banner with Video */
+  .banner{position:relative; border-radius:18px; overflow:hidden; min-height:320px; box-shadow:0 22px 70px rgba(2,6,23,.25)}
+  .banner video{
+    width:100%; height:420px; object-fit:contain; /* Changed from cover to contain to center content */
+    filter:brightness(.8); display:block;
+    margin: 0 auto; /* Center the video horizontally */
+    background-color: #000; /* Add black background to fill empty space */
+  }
+  .banner .overlay{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff;
+    padding:20px; background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.5) 70%);
+  }
+  .banner h1{font-size:36px; margin:0 0 10px}
+  .banner p{color:#dbeafe; margin:0 0 16px}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px; font-weight:700; border:0; cursor:pointer;
+    padding:12px 16px; border-radius:999px; color:#fff;
+    background: linear-gradient(135deg, var(--brand), var(--brand2));
+    box-shadow:0 12px 26px rgba(37,117,252,.4); transition:.25s transform,.25s box-shadow,.25s filter;
+  }
+  .btn:hover{ transform:translateY(-1px); filter:brightness(1.05); box-shadow:0 18px 36px rgba(37,117,252,.5) }
+  .btn.secondary{ background:linear-gradient(135deg,#334155,#0f172a) }
+  .btn-link {
+    background: none;
+    border: none;
+    color: var(--brand2);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    padding: 0 4px;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  /* Modal for Utensils List */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    padding: 16px;
+  }
+  .modal-content {
+    background: var(--card);
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: modal-pop .3s ease-out;
+  }
+  @keyframes modal-pop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--ink);
+  }
+  .modal-list {
+    list-style: none;
+    padding: 0 10px 0 0; /* Add padding for scrollbar */
+    margin: 0 0 24px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Increased spacing */
+    max-height: 60vh; /* Limit height for long lists */
+    overflow-y: auto; /* Add scroll if needed */
+  }
+  .modal-list li {
+    display: flex;
+    align-items: flex-start; /* Align to top for multi-line text */
+    gap: 12px;
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .modal-list .sr-no {
+    font-weight: 600;
+    color: var(--ink);
+    width: 25px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .modal-list li i {
+    color: var(--brand2);
+    width: 20px;
+    text-align: center;
+    margin-top: 3px; /* Align icon better with first line of text */
+  }
+
+  /* 2-cols */
+  .cols { display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
+
+  /* Map frame */
+  .map{ border:0; width:100%; height:260px; border-radius:14px; box-shadow:0 16px 40px rgba(2,6,23,.18) }
+
+  /* Booking Section */
+  .info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+  .calendar{
+    border-radius:18px; overflow:hidden;
+    background:#0b1220; color:#e5e7eb;
+    box-shadow:0 20px 40px rgba(2,6,23,.35);
+  }
+  .cal-head{
+    display:flex; align-items:center; justify-content:space-between; padding:12px 16px;
+    background: linear-gradient(135deg,#0b1220,#111827);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .cal-title{ font-weight:700; letter-spacing:.3px;}
+  .cal-grid{
+    display:grid; grid-template-columns: repeat(7, 1fr); gap:10px; padding:14px; background: #0f172a;
+  }
+  .cal-day, .cal-cell{
+    text-align:center; font-size:13px; padding:8px; border-radius:10px;
+  }
+  .cal-day{ color:#93c5fd; font-weight:600; }
+  .cal-cell{
+    background:#0b1220; border:1px solid rgba(255,255,255,.06); cursor:pointer; position:relative; transition:.2s transform,.2s filter;
+  }
+  .cal-cell:hover{ transform: translateY(-1px); filter:brightness(1.06) }
+  .cal-cell.muted{ opacity:.5 }
+  .cal-cell.selected{ outline:2px solid #60a5fa }
+  .cal-dot { width:6px; height:6px; background:#22c55e; border-radius:50%; position:absolute; bottom:6px; left: calc(50% - 3px); }
+
+  /* Form */
+  .form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  label{ font-size:13px; color:#334155; display:flex; align-items:center; gap:8px; margin-bottom:6px }
+  input, select, textarea{
+    width:100%; padding:12px 12px; border-radius:12px; border:2px solid #e2e8f0; outline:0; font:inherit; color:#0f172a;
+    transition:.25s border-color,.25s box-shadow; background:#fff;
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:#60a5fa; box-shadow:0 0 0 4px var(--ring)
+  }
+  input[readonly]{
+    background-color:#f8fafc; color:#64748b; cursor:not-allowed;
+  }
+  .field{ margin-bottom:12px }
+  .hint{ font-size:12px; min-height:16px; margin-top:6px }
+  .form-action-row{ display:flex; flex-direction:column; align-items:flex-start; }
+  .form-action-main{ display:flex; align-items:center; flex-wrap:wrap; }
+  .hint.err{ color:#ef4444 } .hint.ok{ color:var(--brand3) }
+
+  /* Alerts list / History */
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .tag{
+    display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700;
+  }
+  .tag.high{ background:#fee2e2; color:#b91c1c }
+  .tag.medium{ background:#ffedd5; color:#c2410c }
+  .tag.low{ background:#dcfce7; color:#166534 }
+
+  /* Gallery */
+  .gallery{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px }
+  .gallery img{
+    width:100%; border-radius:14px; box-shadow:0 14px 36px rgba(2,6,23,.18);
+    transition:.25s transform,.25s filter;
+  }
+  .gallery img:hover{ transform: translateY(-2px); filter:brightness(1.03) }
+
+  .section-subtitle {
+    margin-top: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 22px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .section-subtitle i { color: var(--brand2); }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .video-grid video {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 14px 36px rgba(2, 6, 23, .18);
+    transition: .3s transform, .3s box-shadow;
+  }
+  .video-grid video:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 45px rgba(2, 6, 23, .25); }
+
+  /* Testimonials Slider */
+  .slider { position:relative; overflow:hidden; border-radius:18px; }
+  .slides{ display:flex; transition: transform .5s ease; }
+  .slide{ min-width:100%; padding:22px; background:#ffffff; border-radius:18px; box-shadow:0 16px 44px rgba(2,6,23,.16) }
+  .dots{ display:flex; gap:8px; justify-content:center; margin-top:10px }
+  .dot{ width:10px; height:10px; border-radius:50%; background:#cbd5e1; cursor:pointer; }
+  .dot.active{ background:#2563eb }
+
+  /* Back to Top */
+  #toTop{
+    position:fixed; right:16px; bottom:16px; z-index: 50; opacity:0; visibility:hidden;
+    transform:translateY(10px); transition:.25s;
+  }
+  #toTop.show{ opacity:1; visibility:visible; transform:none }
+
+  /* Reveal on scroll */
+  .reveal{ opacity:0; transform: translateY(10px); transition: .6s ease }
+  .reveal.show{ opacity:1; transform:none }
+
+  /* Footer */
+  footer{ text-align:center; padding:16px; color:#6b7280 }
+
+  /* ========================
+     Responsive Design
+  ======================== */
+  @media (max-width: 960px) {
+    /* --- Navigation --- */
+    nav {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #0b1020, #0f1530);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform .4s ease-in-out;
+      z-index: 1000;
+    }
+    nav.active {
+      transform: translateX(0);
+    }
+    nav a {
+      font-size: 18px;
+    }
+    .menu-btn {
+      display: block;
+    }
+
+    /* --- Layout Grids --- */
+    .cols, .info-grid { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    /* --- Layout & Spacing --- */
+    section { padding: 40px 16px; }
+    .form .row { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr; }
+
+    /* --- Typography --- */
+    .brand { font-size: 1rem; }
+    .banner h1 { font-size: 28px; }
+    .banner p { font-size: 15px; }
+    h2 { font-size: 24px; }
+
+    /* --- Header --- */
+    header { padding: 12px 16px; }
+  }
+
+  /* Mobile full-page menu (used when hamburger is clicked) */
+  .mobile-menu-page{
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,16,32,0.96), rgba(15,21,48,0.96));
+    display: none;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  .mobile-menu-inner{
+    width:100%;
+    max-width:420px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:18px;
+    padding: 20px;
+    box-shadow: 0 30px 80px rgba(2,6,23,.6);
+    text-align:center;
+    backdrop-filter: blur(8px);
+  }
+  .mobile-menu-nav { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+  .mobile-menu-nav a{
+    display:block;
+    text-decoration:none;
+    padding:14px 18px;
+    border-radius:12px;
+    color:#fff;
+    background: linear-gradient(90deg, var(--brand), var(--brand2));
+    font-weight:700;
+    box-shadow: 0 8px 22px rgba(37,117,252,.18);
+  }
+  .mobile-menu-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+  .mobile-menu-close {
+    background: none;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding:8px 12px;
+    border-radius:10px;
+  }
+
+  /* Ensure hamburger visible on small screens */
+  @media (max-width:960px){
+    .menu-btn { display:block }
+  }
+
+  /* Password modal (attractive + responsive) */
+  .pw-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.7));
+    z-index: 2200;
+    padding: 20px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transition: opacity .22s ease;
+  }
+  .pw-modal-overlay.show { display:flex; opacity:1; }
+
+  .pw-modal {
+    width: 100%;
+    max-width: 460px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,248,255,0.98));
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 22px 60px rgba(3,7,18,.5);
+    border: 1px solid rgba(37,117,252,.06);
+    text-align: left;
+    animation: pw-pop .26s cubic-bezier(.2,.9,.25,1);
+  }
+  @keyframes pw-pop { from { transform: translateY(8px) scale(.99); opacity:0 } to { transform:none; opacity:1 } }
+
+  .pw-modal h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: var(--ink);
+    display:flex; align-items:center; gap:10px;
+  }
+  .pw-modal p { margin:0 0 12px; color:var(--muted); font-size:14px }
+
+  .pw-input-wrap {
+    display:flex; gap:8px; align-items:center;
+    background: linear-gradient(180deg, #fff, #fbfdff);
+    border-radius:10px;
+    padding:8px;
+    border:1px solid rgba(15,23,42,.06);
+  }
+  .pw-input-wrap input[type="password"],
+  .pw-input-wrap input[type="text"]{
+    flex:1; border:0; outline:0; font-size:15px; padding:8px 6px; color:var(--ink);
+    background: transparent;
+  }
+  .pw-toggle {
+    background:none; border:0; color:var(--brand2); cursor:pointer; font-weight:600;
+  }
+
+  .pw-error {
+    margin-top:8px; color:#ef4444; font-size:13px; min-height:18px; display:block;
+  }
+
+  .pw-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap; }
+  .pw-actions .btn { padding:8px 12px; border-radius:10px; font-size:14px }
+  .pw-cancel { background:transparent; border:1px solid rgba(15,23,42,.06); color:var(--ink) }
+
+  /* subtle shake for wrong password */
+  @keyframes shake { 10%,90%{ transform:translateX(-1px) } 20%,80%{ transform:translateX(2px) } 30%,50%,70%{ transform:translateX(-4px) } 40%,60%{ transform:translateX(4px) } }
+  .pw-modal.shake { animation: pw-pop .26s ease, shake .4s linear; }
+
+  /* Responsive tweaks */
+  @media (max-width:480px){
+    .pw-modal{ padding:14px; max-width: 92%; }
+    .pw-modal h3{ font-size:16px }
+    .pw-actions { justify-content: center; }
+  }
+
+  /* ========================
+     JavaScript
+  ======================== */
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="brand"><i class="fa-solid fa-champagne-glasses"></i> SB STAR LAWN</div>
+  <nav id="mainNav">
+    <a href="#home"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#booking"><i class="fa-solid fa-calendar-days"></i> Booking</a>
+    <a href="#about"><i class="fa-solid fa-building"></i> About</a>
+    <a href="#success"><i class="fa-solid fa-trophy"></i> Success</a>
+    <a href="#gallery"><i class="fa-solid fa-image"></i> Gallery</a>
+    <a href="#contact"><i class="fa-solid fa-phone"></i> Contact</a>
+    <a href="#booking" class="cta"><i class="fa-solid fa-bolt"></i> Book Now</a>
+  </nav>
+  <button id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="mobileMenuPage"><i class="fa-solid fa-bars"></i></button>
+</header>
+
+<!-- Mobile full-page menu (opened by hamburger) -->
+<div id="mobileMenuPage" class="mobile-menu-page" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="mobile-menu-inner" role="document">
+    <h2 style="margin:0 0 8px; color:#fff">Menu</h2>
+    <p style="margin:0 0 12px; color:rgba(255,255,255,0.85)">Quick links</p>
+
+    <nav class="mobile-menu-nav" aria-label="Mobile main navigation">
+      <a href="#home" data-target="#home">Home</a>
+      <a href="#booking" data-target="#booking">Booking</a>
+      <a href="#about" data-target="#about">About</a>
+      <a href="#success" data-target="#success">Success</a>
+      <a href="#gallery" data-target="#gallery">Gallery</a>
+      <a href="#contact" data-target="#contact">Contact</a>
+      <a href="#booking" class="cta" data-target="#booking" style="margin-top:8px;">Book Now</a>
+    </nav>
+
+    <div class="mobile-menu-actions">
+      <button id="mobileMenuClose" class="mobile-menu-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<section id="home" class="reveal">
+  <div class="banner">
+    <img loading="lazy" src="img/img3.jpeg" alt="SB STAR LAWN" style="width:100%; height:420px; object-fit:cover; display:block;">
+    <div class="overlay">
+      <h1>Make Moments Magical ✨</h1>
+      <p>Premium venue for weddings, receptions, birthdays & corporate events.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
+        <a href="#booking" class="btn"><i class="fa-solid fa-calendar-plus"></i> Book Your Date</a>
+        <a href="#contact" class="btn secondary"><i class="fa-solid fa-location-dot"></i> Find Us</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols" style="margin-top:18px">
+    <div class="card reveal">
+      <h2><i class="fa-solid fa-map-location-dot"></i> Our Location</h2>
+      <p>“Scan the QR code to see our location instantly—making your visit easier than ever!”</p>
+      <img loading="lazy" style="width:40%; border-radius:14px; box-shadow:0 14px 36px rgba(2,6,23,.18)" src="img/LOCATION QR.jpeg" alt="Lights">
+    </div>
+    <div class="card reveal">
+      <h2><i class="fa-solid fa-star"></i> Why Choose Us</h2>
+      <ul>
+        <li>Spacious Hall & Modern Interiors</li>
+        <li>Premium Lighting & Decor</li>
+        <li>On-site Catering & Service Staff</li>
+        <li>Dedicated Event Manager</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+    <label for="langSelect" style="font-size:12px; color:var(--muted);" data-i18n="language.label">Language</label>
+    <select id="langSelect" class="btn secondary" style="padding:6px 10px; font-size:13px;">
+      <option value="en">English</option>
+      <option value="mr">मराठी</option>
+    </select>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <h2 class="reveal"><i class="fa-solid fa-calendar-check"></i> Booking Management</h2>
+  <div class="info-grid">
+    <!-- Calendar -->
+    <div class="calendar reveal">
+      <div class="cal-head">
+        <button class="btn secondary" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="cal-title" id="calTitle">Month YYYY</div>
+        <button class="btn secondary" id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="cal-grid" id="calGrid">
+        <!-- Days will be generated dynamically -->
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 10px;">
+        <video style="width: 60%; max-width: 300px; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);" autoplay muted loop playsinline controls>
+          <source src="img/vid 9.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <!-- Booking form + events -->
+    <div class="card reveal">
+      <h3 style="margin-top:0"><i class="fa-solid fa-pen-to-square"></i> New Booking</h3>
+      <form id="bookingForm" class="form" novalidate>
+        <div class="field">
+          <label for="name"><i class="fa-solid fa-user"></i> Full Name</label>
+          <input id="name" type="text" placeholder="John Doe" required />
+          <div class="hint" id="nameHint"></div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="phone"><i class="fa-solid fa-phone"></i> Phone Number</label>
+            <input id="phone" type="tel" placeholder="9876543210" required />
+            <div class="hint" id="phoneHint"></div>
+          </div>
+          <div class="field">
+            <label for="functionType" data-i18n="label.functionType"><i class="fa-solid fa-gift"></i> Function Type</label>
+            <select id="functionType">
+              <option>Wedding 🎉</option>
+              <option>Birthday 🎂</option>
+              <option>Reception 💍</option>
+              <option>Conference 🏢</option>
+              <option>Naming Ceremony 👶</option>
+              <option>Hakikah👳‍♀️</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="date"><i class="fa-solid fa-calendar-day"></i> Event Date</label>
+            <input id="date" type="date" required />
+            <div class="hint" id="dateHint"></div>
+          </div>
+          <div class="field">
+            <label for="totalAmount"><i class="fa-solid fa-calculator"></i> Total Amount</label>
+            <input id="totalAmount" type="number" min="0" placeholder="7000" required />
+            <div class="hint" id="totalAmountHint"></div>
+          </div>
+        </div>
+
+        <div class="row">
+  <div class="field">
+            <label for="advance"><i class="fa-solid fa-money-bill-wave"></i> Advance Amount</label>
+            <input id="advance" type="number" min="0" placeholder="5000" required />
+            <div class="hint" id="advanceHint"></div>
+          </div>
+          <div class="field">
+            <label for="pending"><i class="fa-solid fa-credit-card"></i> Pending Amount (Auto-calculated)</label>
+            <input id="pending" type="number" min="0" placeholder="2000" readonly />
+            <div class="hint" id="pendingHint">This will be calculated automatically</div>
+          </div>
+  </div>
+
+        <div class="row">
+  <div class="field">
+    <label for="paymentMode"><i class="fa-solid fa-wallet"></i> Payment Mode</label>
+    <select id="paymentMode">
+      <option value="cash">Cash</option>
+      <option value="upi">UPI / QR</option>
+    </select>
+  </div>
+          <div class="field">
+            <!-- Empty field for layout balance -->
+          </div>
+</div>
+
+<!-- QR Code Section (Hidden by default) -->
+<div id="qrSection" style="display:none; margin-top:10px;">
+  <label><i class="fa-solid fa-qrcode"></i> Scan QR to Pay</label><br>
+  <img src="img/QR scaner.jpeg" alt="UPI QR Code" width="200" style="border:1px solid #ccc; border-radius:10px; padding:5px;">
+</div>
+
+<div class="field">
+  <label for="session" data-i18n="label.session"><i class="fa-solid fa-clock"></i> Session</label>
+  <select id="session">
+    <option value="Morning">Morning ☀️6:00 AM to 3:30 PM </option>
+    <option value="Evening">Evening 🌙4:30 PM to 11:00 PM </option>
+  </select>
+</div>
+
+        <div class="form-action-row">
+          <div class="form-action-main">
+            <button type="submit" class="btn" id="saveBtn"><span data-i18n="btn.saveBooking">Save Booking</span></button>
+            <button type="button" class="btn secondary" onclick="testForm()" style="margin-left: 10px;">Test Form</button>
+          </div>
+          <button type="button" class="btn secondary" id="certificateBtn" style="margin-top: 10px; display: none; width: fit-content;">Download Certificate</button>
+        </div>
+        <div id="formMsg" class="hint" style="margin-top:8px"></div>
+      </form>
+
+      <hr style="margin:18px 0; opacity:.3">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="margin:0;" data-i18n="heading.upcomingEvents"><i class="fa-solid fa-list"></i> Upcoming Events</h3>
+        <button id="toggleEventsBtn" class="btn secondary" style="padding: 6px 12px; font-size: 14px;">Show List <i class="fa-solid fa-chevron-down"></i></button>
+      </div>
+      <div class="list" id="bookingFormEventList" style="display:none;">
+        <!-- Events will be added here -->
+      </div>
+    </div>
+  </div>
+
+<!-- Back to top -->
+<button id="toTop" class="btn"><i class="fa-solid fa-arrow-up"></i></button>
+
+<!-- Settle Payment Modal -->
+<div id="settleModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 class="modal-title"><i class="fa-solid fa-hand-holding-dollar"></i> Settle Pending Payment</h3>
+    <p id="settleModalText" style="margin-bottom: 16px; color: var(--muted);"></p>
+    <div class="field" style="text-align: left;">
+        <label for="settlePaymentMode"><i class="fa-solid fa-wallet"></i> Payment Mode</label>
+        <input id="settlePaymentMode" type="text" placeholder="e.g., Cash, UPI, Card" />
+    </div>
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px;">
+        <button id="settleCancelBtn" class="btn secondary">Cancel</button>
+        <button id="settleOkBtn" class="btn">Mark as Paid</button>
+    </div>
+  </div>
+</div>
+
+<!-- Date Conflict Modal (Hall already booked) -->
+<div id="dateConflictModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 class="modal-title">
+      <i class="fa-solid fa-circle-exclamation" style="color:#f97316;"></i>
+      Hall Already Booked
+    </h3>
+    <p id="dateConflictText" style="margin-bottom: 16px; color: var(--muted);">
+      The hall is already booked for this date. Please choose another available date from the calendar.
+    </p>
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+      <button id="dateConflictOkBtn" class="btn">OK, I’ll choose another date</button>
+    </div>
+  </div>
+</div>
+
+<!-- Password Modal for Upcoming Events (new) -->
+<div id="pwModalOverlay" class="pw-modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="pwModalTitle" aria-modal="true">
+  <div id="pwModal" class="pw-modal" role="document">
+    <h3 id="pwModalTitle"><i class="fa-solid fa-lock"></i> Enter Password</h3>
+    <p>Protected Upcoming Events — please enter the password to continue.</p>
+    <div class="pw-input-wrap">
+      <input id="pwInput" type="password" placeholder="Enter password" autocomplete="one-time-code" />
+      <button id="pwToggle" class="pw-toggle" type="button" aria-pressed="false" title="Show password">Show</button>
+    </div>
+    <div id="pwError" class="pw-error" aria-live="polite"></div>
+    <div class="pw-actions">
+      <button id="pwCancel" class="pw-cancel">Cancel</button>
+      <button id="pwSubmit" class="btn">Show List</button>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Confirmation Modal -->
+<div id="refundModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 class="modal-title"><i class="fa-solid fa-money-bill-wave"></i> Cancel Booking & Process Refund</h3>
+    <div id="refundModalText" style="margin-bottom: 16px; color: var(--muted);"></div>
+    
+    <div class="field" style="text-align: left; margin-bottom: 16px;">
+      <label for="refundAmount"><i class="fa-solid fa-calculator"></i> Refund Amount</label>
+      <input id="refundAmount" type="number" readonly style="background-color: #f8fafc; color: #64748b;" />
+    </div>
+    
+    <div class="field" style="text-align: left; margin-bottom: 16px;">
+      <label for="refundMode"><i class="fa-solid fa-wallet"></i> Refund Method</label>
+      <select id="refundMode">
+        <option value="cash">Cash</option>
+        <option value="bank_transfer">Bank Transfer</option>
+        <option value="upi">UPI / Digital</option>
+        <option value="cheque">Cheque</option>
+      </select>
+    </div>
+    
+    <div class="field" style="text-align: left; margin-bottom: 16px;">
+      <label for="refundReason"><i class="fa-solid fa-comment"></i> Reason for Cancellation</label>
+      <textarea id="refundReason" rows="3" placeholder="Enter reason for cancellation..."></textarea>
+    </div>
+    
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px;">
+      <button id="refundCancelBtn" class="btn secondary">Keep Booking</button>
+      <button id="refundConfirmBtn" class="btn" style="background: #ef4444;">Process Refund</button>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Events Section -->
+<section id="upcomingEvents" class="reveal">
+  <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+    <button id="toggleUpcomingEventsBtn" class="btn">
+      Show List for payPending<i class="fa-solid fa-chevron-down"></i>
+    </button>
+    <button id="exportToExcelBtn" class="btn secondary" style="display: none;">
+      <i class="fa-solid fa-file-excel"></i> <span data-i18n="btn.exportUpcoming">Export Upcoming</span>
+    </button>
+    <button id="exportAllToExcelBtn" class="btn secondary" style="display: none;">
+      <i class="fa-solid fa-file-excel"></i> <span data-i18n="btn.exportAll">Export All Bookings</span>
+    </button>
+    <button id="saveDatabaseBtn" class="btn secondary" style="display: none; background: #22c55e; color: white;">
+      <i class="fa-solid fa-database"></i> <span data-i18n="btn.saveDatabase">Save to Database</span>
+    </button>
+  </div>
+  <div id="upcomingEventsList" style="display: none; flex-direction: column; gap: 10px;">
+    <!-- Upcoming events will be dynamically rendered here -->
+  </div>
+</section>
+
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+  <div class="card">
+    <h2><i class="fa-solid fa-building-columns"></i> About Us</h2>
+    <p>SB STAR LAWN is a premium venue designed to host unforgettable celebrations. From weddings and receptions to corporate conferences, our team ensures seamless execution with elegance and warmth.</p>
+    <ul>
+      <li>✔️ Central Location</li>
+      <!--<li>✔️ Dedicated Event Planner</li>-->
+      <li>✔️ High-capacity Seating</li>
+     <!-- <li>✔️ Advanced Lighting & Sound</li>-->
+      <li>✔️ Kitchen utensils <button id="utensilsBtn" class="btn-link">(View List)</button></li>
+      <li>✔️ 20 Table</li>
+      <li>✔️ 200 Chair</li>
+       <li>✔️ Two halls and Four bedrooms.</li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- SUCCESS STORIES -->
+<section id="success" class="reveal">
+  <h2><i class="fa-solid fa-trophy"></i> Success Stories</h2>
+  <div class="slider card">
+    <div class="slides" id="slides">
+      <div class="slide">
+        <h3>“A Dream Wedding!”</h3>
+        <p>Everything was perfect—from décor to hospitality. The team exceeded our expectations. ⭐⭐⭐⭐⭐</p>
+      </div>
+      <div class="slide">
+        <h3>“Best Birthday Venue”</h3>
+        <p>Spacious, clean, and well-managed. Kids loved it, and so did the parents! ⭐⭐⭐⭐⭐</p>
+      </div>
+      <div class="slide">
+        <h3>“Flawless Corporate Meet”</h3>
+        <p>Great AV setup and seamless arrangements. Would definitely book again. ⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="reveal">
+  <h2><i class="fa-solid fa-images"></i> Gallery</h2>
+
+  <h3 class="section-subtitle"><i class="fa-solid fa-image"></i> Photos</h3>
+  <div class="gallery">
+    <img loading="lazy" src="img/img1.jpeg" alt="Wedding">
+    <img loading="lazy" src="img/img2.jpeg" alt="Reception">
+    <img loading="lazy" src="img/img3.jpeg" alt="Birthday">
+    <img loading="lazy" src="img/img4.jpeg" alt="Decor">
+    <img loading="lazy" src="img/img9.jpeg" alt="Catering">
+    <img loading="lazy" src="img/img6.jpeg" alt="Lights">
+    <img loading="lazy" src="img/img7.jpeg" alt="Lights">
+    <img loading="lazy" src="img/img8.jpeg" alt="Lights">
+    <img loading="lazy" src="img/img5.jpeg" alt="Lights">
+  </div>
+
+  <hr style="margin: 30px 0; opacity: .3;">
+
+  <h3 class="section-subtitle"><i class="fa-solid fa-video"></i> Videos</h3>
+  <div class="video-grid">
+    <video controls preload="metadata" poster="img/vid1.mp4">
+      <source src="img/vid1.mp4" type="video/mp4">
+    </video>
+    <video controls preload="metadata" poster="img/vid2.mp4">
+      <source src="img/vid2.mp4" type="video/mp4">
+    </video>
+    <video controls preload="metadata" poster="img/vid3.mp4">
+      <source src="img/vid3.mp4" type="video/mp4">
+    </video>
+  <video controls preload="metadata" poster="img/vid4.mp4">
+      <source src="img/vid4.mp4" type="video/mp4">
+    </video>
+    <video controls preload="metadata" poster="img/vid5.mp4">
+      <source src="img/vid5.mp4" type="video/mp4">
+    </video>
+    <video controls preload="metadata" poster="img/vid6.mp4">
+      <source src="img/vid6.mp4" type="video/mp4">
+    </video>
+     <video controls preload="metadata" poster="img/vid7.mp4">
+      <source src="img/vid7.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+  <div class="cols">
+    <div class="card">
+      <h2><i class="fa-solid fa-envelope-open-text"></i> Contact Us</h2>
+      <form id="contactForm" class="form">
+        <div class="field">
+          <label><i class="fa-solid fa-user"></i> Your Name</label>
+          <input type="text" id="cName" placeholder="Your Name" required>
+          <div class="hint" id="cNameHint"></div>
+        </div>
+        <div class="field">
+          <label><i class="fa-solid fa-envelope"></i> Your Email</label>
+          <input type="email" id="cEmail" placeholder="you@example.com" required>
+          <div class="hint" id="cEmailHint"></div>
+        </div>
+        <div class="field">
+          <label><i class="fa-solid fa-message"></i> Message</label>
+          <textarea id="cMsg" rows="4" placeholder="How can we help?"></textarea>
+        </div>
+        <button class="btn" id="cSend"><span>Send Message</span></button>
+        <div id="cFormMsg" class="hint"></div>
+      </form>
+    </div>
+    <div class="card">
+      <h2><i class="fa-solid fa-location-dot"></i> Find Us</h2>
+      <img loading="lazy" style="width:70%; border-radius:14px; box-shadow:0 14px 36px rgba(2,6,23,.18)" src="img/LOCATION QR.jpeg" alt="Lights">
+      <p><strong>SCAN QR FOR LIVE LOCATION:</strong></p>
+      <p><strong>Address:</strong> Near panchaganga bridge , shirdon - kurundwad road , kurundwad <br> Talq : shirol , Dist : kolhapur ...</p>
+      <p><strong>Phone:</strong> +91 9970005558 , +91 9697005558</p>
+      <p><strong>Email:</strong> farukbagwanfb558@gmail.com <br> sadikbagwan54@gmail.com</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 SB STAR LAWN. All rights reserved.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-7cJteLoI0lp4rWuIwoMvVJE9idh+NEnNh4tW7x1YgnSUZXoqBYwygJyI072QtdgQXl3k5ufADG7n2AFD+a83mg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+/* ========================
+   Helpers / UI utilities
+======================== */
+const $ = (sel, root=document)=>root.querySelector(sel);
+const $$ = (sel, root=document)=>Array.from(root.querySelectorAll(sel));
+
+// Show/hide spinner on buttons
+function showSpinner(button, show) {
+  if (show) {
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+  } else {
+    button.disabled = false;
+    button.innerHTML = '<span>Save Booking</span>';
+  }
+}
+
+/* ========================
+   Mobile Navigation
+======================== */
+const menuBtn = $('#menuBtn');
+const mobileMenuPage = $('#mobileMenuPage');
+const mobileMenuClose = $('#mobileMenuClose');
+const mainNav = $('#mainNav');
+const navLinks = $$('a', mainNav);
+
+// Toggle mobile full-page menu
+function openMobileMenu(){
+  mobileMenuPage.style.display = 'flex';
+  mobileMenuPage.setAttribute('aria-hidden','false');
+  menuBtn.setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
+  // set focus to first link for accessibility
+  const first = mobileMenuPage.querySelector('.mobile-menu-nav a');
+  if(first) first.focus();
+}
+function closeMobileMenu(){
+  mobileMenuPage.style.display = 'none';
+  mobileMenuPage.setAttribute('aria-hidden','true');
+  menuBtn.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+  menuBtn.focus();
+}
+
+menuBtn.addEventListener('click', () => {
+  const isOpen = mobileMenuPage.style.display === 'flex';
+  if(isOpen) closeMobileMenu();
+  else openMobileMenu();
+});
+
+// Close handlers
+mobileMenuClose.addEventListener('click', closeMobileMenu);
+mobileMenuPage.addEventListener('click', (e)=>{
+  // click outside inner -> close
+  if(e.target === mobileMenuPage) closeMobileMenu();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeMobileMenu();
+});
+
+// When a mobile menu link is clicked, navigate to section and close menu
+document.querySelectorAll('#mobileMenuPage .mobile-menu-nav a').forEach(a=>{
+  a.addEventListener('click', (ev)=>{
+    ev.preventDefault();
+    const target = a.getAttribute('data-target') || a.getAttribute('href');
+    if(target && target.startsWith('#')){
+      // scroll to target section smoothly
+      const el = document.querySelector(target);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    } else if(target){
+      window.location.href = target;
+    }
+    closeMobileMenu();
+  });
+});
+
+// Existing logic: close the overlay nav when a desktop nav link clicked
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    // If mobile menu is open, close it (safety)
+    closeMobileMenu();
+  });
+});
+
+/* ========================
+   Reveal on scroll
+======================== */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('show'); observer.unobserve(e.target); }
+  })
+},{ threshold:.15 });
+$$('.reveal').forEach(el=>observer.observe(el));
+
+/* ========================
+   Back to top
+======================== */
+const toTop = $('#toTop');
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 400) toTop.classList.add('show');
+  else toTop.classList.remove('show');
+});
+toTop.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+/* ========================
+   Calendar Widget
+======================== */
+const calTitle = $('#calTitle');
+const calGrid  = $('#calGrid');
+const prevBtn  = $('#prevMonth');
+const nextBtn  = $('#nextMonth');
+
+let current = new Date();
+current.setDate(1);
+
+// API Configuration
+const API_BASE_URL = 'http://localhost:3000/api';
+let bookings = []; // {id, bookingDate, date, name, phone, type, advance, advanceMode, pending, pendingMode, pendingPaidOn, notes}
+
+/* ===== Fix: ensure every booking has a stable id ===== */
+function ensureBookingIds(list){
+  if(!Array.isArray(list)) return [];
+  const base = Date.now();
+  return list.map((b, i) => {
+    if(!b) return b;
+    if(!b.id){
+      // prefer existing uid-like fields if present, otherwise create one
+      b.id = `local_${base}_${i}`;
+    }
+    return b;
+  });
+}
+
+/* ========================
+   API Helper Functions
+======================== */
+async function apiRequest(endpoint, options = {}) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      },
+      ...options
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API request failed:', error);
+    throw error;
+  }
+}
+
+// Create sample booking data for testing
+function createSampleBookings() {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dayAfter = new Date(today);
+  dayAfter.setDate(dayAfter.getDate() + 2);
+  const nextWeek = new Date(today);
+  nextWeek.setDate(nextWeek.getDate() + 7);
+
+  const sampleBookings = [
+    {
+      id: 'sample_1',
+      name: 'John Doe',
+      phone: '9876543210',
+      functionType: 'Wedding 🎉',
+      date: tomorrow.toISOString().split('T')[0],
+      totalAmount: 15000,
+      advance: 10000,
+      advanceMode: 'cash',
+      pending: 5000,
+      session: 'Evening 🌙'
+    },
+    {
+      id: 'sample_2',
+      name: 'Jane Smith',
+      phone: '9876543211',
+      functionType: 'Birthday 🎂',
+      date: dayAfter.toISOString().split('T')[0],
+      totalAmount: 8000,
+      advance: 5000,
+      advanceMode: 'upi',
+      pending: 3000,
+      session: 'Morning ☀️'
+    },
+    {
+      id: 'sample_3',
+      name: 'Mike Johnson',
+      phone: '9876543212',
+      functionType: 'Reception 💍',
+      date: nextWeek.toISOString().split('T')[0],
+      totalAmount: 20000,
+      advance: 15000,
+      advanceMode: 'cash',
+      pending: 5000,
+      session: 'Evening 🌙'
+    }
+  ];
+
+  return sampleBookings;
+}
+
+// Function to create sample data (called from button)
+function createSampleData() {
+  bookings = createSampleBookings();
+  localStorage.setItem('bookings', JSON.stringify(bookings));
+  renderEvents();
+  renderCalendar();
+  renderUpcomingCustomers(); // Refresh the upcoming events list
+}
+
+// Test function to debug form
+function testForm() {
+  console.log('=== FORM TEST ===');
+  console.log('Form elements found:');
+  console.log('nameEl:', nameEl);
+  console.log('phoneEl:', phoneEl);
+  console.log('dateEl:', dateEl);
+  console.log('totalAmountEl:', totalAmountEl);
+  console.log('advEl:', advEl);
+  console.log('sessionEl:', sessionEl);
+  console.log('paymentModeEl:', paymentModeEl);
+  
+  console.log('Form values:');
+  console.log('Name:', nameEl?.value);
+  console.log('Phone:', phoneEl?.value);
+  console.log('Date:', dateEl?.value);
+  console.log('Total:', totalAmountEl?.value);
+  console.log('Advance:', advEl?.value);
+  console.log('Session:', sessionEl?.value);
+  console.log('Payment Mode:', paymentModeEl?.value);
+  
+  // Test validation
+  console.log('Validation test:', validate());
+  
+  // Test booking data creation
+  const bookingData = {
+    name: nameEl?.value?.trim() || 'Test User',
+    phone: phoneEl?.value?.trim() || '9876543210',
+    functionType: typeEl?.value || 'Wedding 🎉',
+    date: dateEl?.value || new Date().toISOString().split('T')[0],
+    totalAmount: +(totalAmountEl?.value || 10000),
+    advance: +(advEl?.value || 5000),
+    advanceMode: paymentModeEl?.value || 'cash',
+    pending: +(pendEl?.value || 5000),
+    session: sessionEl?.value || 'Evening'
+  };
+  
+  console.log('Test booking data:', bookingData);
+  
+  // Test save
+  saveBooking(bookingData).then(async savedBooking => {
+    console.log('Test save result:', savedBooking);
+    if (savedBooking) {
+      renderEvents();
+      renderCalendar();
+      renderUpcomingCustomers();
+      updateCertificateButtonVisibility(savedBooking);
+      await generateCertificatePdf(savedBooking);
+      sendCertificateWhatsApp(savedBooking);
+      alert('Test booking saved successfully!');
+    } else {
+      updateCertificateButtonVisibility(null);
+      alert('Test booking failed!');
+    }
+  });
+}
+
+// Load bookings from backend
+async function loadBookings() {
+  try {
+    const response = await apiRequest('/bookings');
+    if (response.success) {
+      bookings = ensureBookingIds(response.data || []);
+      renderEvents();
+      renderCalendar();
+      // persist to localStorage as a fallback cache
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      
+      // Sync with database
+      syncBookingsWithDatabase();
+    }
+  } catch (error) {
+    console.error('Failed to load bookings:', error);
+    // Fallback to localStorage if API fails
+    const stored = localStorage.getItem('bookings');
+    if (stored) {
+      bookings = ensureBookingIds(JSON.parse(stored));
+      renderEvents();
+      renderCalendar();
+      
+      // Sync with database
+      syncBookingsWithDatabase();
+    } else {
+      // Try to load from database
+      const dbBookings = loadBookingsFromDatabase();
+      if (dbBookings.length > 0) {
+        bookings = ensureBookingIds(dbBookings);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        renderEvents();
+        renderCalendar();
+        console.log('Loaded bookings from database');
+      } else {
+        // If no stored data and API fails, create sample data
+        console.log('No stored bookings found, creating sample data...');
+        bookings = createSampleBookings();
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        renderEvents();
+        renderCalendar();
+        
+        // Save sample data to database
+        bookings.forEach(booking => saveBookingToDatabase(booking));
+      }
+    }
+  }
+}
+
+// Save booking to backend
+async function saveBooking(bookingData) {
+  try {
+    const response = await apiRequest('/bookings', {
+      method: 'POST',
+      body: JSON.stringify(bookingData)
+    });
+    
+    if (response.success) {
+      // ensure id
+      response.data = ensureBookingIds([response.data])[0];
+      bookings.push(response.data);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      
+      // Save to database
+      saveBookingToDatabase(response.data);
+      
+      console.log('Booking saved successfully via API:', response.data);
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Failed to save booking via API, using localStorage:', error);
+    // Fallback to localStorage: ensure booking has an id
+    bookingData.id = bookingData.id || `local_${Date.now()}`;
+    bookings.push(bookingData);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+    // Save to database
+    saveBookingToDatabase(bookingData);
+    
+    console.log('Booking saved to localStorage:', bookingData);
+    return bookingData;
+  }
+}
+
+// Update booking in backend
+async function updateBooking(bookingId, updateData) {
+  try {
+    const response = await apiRequest(`/bookings/${bookingId}`, {
+      method: 'PUT',
+      body: JSON.stringify(updateData)
+    });
+    
+    if (response.success) {
+      const index = bookings.findIndex(b => b.id === bookingId);
+      if (index !== -1) {
+        bookings[index] = response.data;
+      }
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Failed to update booking:', error);
+    return false;
+  }
+}
+
+// Delete booking from backend
+async function deleteBooking(bookingId) {
+  try {
+    const response = await apiRequest(`/bookings/${bookingId}`, {
+      method: 'DELETE'
+    });
+    
+    if (response.success) {
+      bookings = bookings.filter(b => b.id !== bookingId);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Failed to delete booking:', error);
+    return false;
+  }
+}
+
+// Settle payment in backend
+async function settlePayment(bookingId, paymentMode) {
+  try {
+    const response = await apiRequest(`/bookings/${bookingId}/settle`, {
+      method: 'PATCH',
+      body: JSON.stringify({ paymentMode })
+    });
+    
+    if (response.success) {
+      const index = bookings.findIndex(b => b.id === bookingId);
+      if (index !== -1) {
+        bookings[index] = response.data;
+      }
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Failed to settle payment:', error);
+    return false;
+  }
+}
+
+function formatDate(dt){
+  const y = dt.getFullYear();
+  const m = String(dt.getMonth()+1).padStart(2,'0');
+  const d = String(dt.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+
+function formatCertificateDate(dateStr) {
+  if (!dateStr) return '—';
+  const parsed = new Date(dateStr);
+  if (isNaN(parsed.getTime())) return dateStr;
+  const formatted = parsed.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+  return `📅 ${formatted}`;
+}
+
+function formatFunctionLabel(value) {
+  if (!value) return '—';
+  return value.includes('🎉') ? value : `🎉 ${value}`;
+}
+function renderCalendar(){
+  calGrid.innerHTML = '';
+  const y = current.getFullYear();
+  const m = current.getMonth();
+  calTitle.textContent = `${current.toLocaleString('default',{month:'long'})} ${y}`;
+
+  const firstDay = new Date(y, m, 1);
+  const lastDay  = new Date(y, m+1, 0);
+
+  const startDayOfWeek = firstDay.getDay(); // 0 - Sunday
+  const daysInMonth = lastDay.getDate();
+
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  dayNames.forEach(d=>{
+    const dn = document.createElement('div');
+    dn.className='cal-day';
+    dn.textContent=d;
+    calGrid.appendChild(dn);
+  });
+
+  // Previous month trailing cells
+  const prevLast = new Date(y, m, 0).getDate();
+  for(let i=0; i<startDayOfWeek; i++){
+    const cell = document.createElement('div');
+    cell.className='cal-cell muted';
+    cell.textContent = (prevLast - startDayOfWeek + 1) + i;
+    calGrid.appendChild(cell);
+  }
+
+  // Current month cells
+  for(let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className='cal-cell';
+    cell.textContent = d;
+    const dtStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+    // mark booked (exclude cancelled bookings)
+    if(bookings.some(b=>b.date===dtStr && b.status !== 'cancelled')){
+      const dot=document.createElement('div');
+      dot.className='cal-dot';
+      cell.appendChild(dot);
+    }
+    cell.addEventListener('click', ()=>{
+      $$('.cal-cell').forEach(c=>c.classList.remove('selected'));
+      cell.classList.add('selected');
+      $('#date').value = dtStr;
+      $('#date').dispatchEvent(new Event('input'));
+      window.location.hash = '#booking';
+    });
+    calGrid.appendChild(cell);
+  }
+
+  // Next month leading cells to complete grid (optional)
+  const totalCells = dayNames.length + startDayOfWeek + daysInMonth;
+  const nextCells = (7 - (totalCells % 7)) % 7;
+  for(let i=1; i<=nextCells; i++){
+    const cell = document.createElement('div');
+    cell.className='cal-cell muted';
+    cell.textContent = i;
+    calGrid.appendChild(cell);
+  }
+}
+prevBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()-1); renderCalendar(); });
+nextBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()+1); renderCalendar(); });
+renderCalendar();
+
+/* ========================
+   Booking Form + Validation
+======================== */
+const nameEl = $('#name'), phoneEl=$('#phone'), typeEl=$('#functionType'), paymentModeEl=$('#paymentMode');
+const dateEl = $('#date'), totalAmountEl = $('#totalAmount'), advEl = $('#advance'), pendEl=$('#pending'), sessionEl=$('#session');
+const hints = {
+  name: $('#nameHint'), phone: $('#phoneHint'), date: $('#dateHint'), totalAmount: $('#totalAmountHint'), adv: $('#advanceHint'), pend: $('#pendingHint')
+};
+function setHint(el, msg, ok=false){
+  const h = hints[el];
+  h.textContent = msg || '';
+  h.className = 'hint ' + (ok ? 'ok':'err');
+}
+
+// Auto-calculate pending amount
+function calculatePendingAmount() {
+  const totalAmount = parseFloat(totalAmountEl.value) || 0;
+  const advanceAmount = parseFloat(advEl.value) || 0;
+  const pendingAmount = totalAmount - advanceAmount;
+  
+  pendEl.value = Math.max(0, pendingAmount);
+  
+  // Update hint
+  if (totalAmount > 0 && advanceAmount > 0) {
+    if (pendingAmount > 0) {
+      setHint('pend', `Pending: ₹${pendingAmount}`, true);
+    } else if (pendingAmount === 0) {
+      setHint('pend', 'Fully paid!', true);
+    } else {
+      setHint('pend', 'Advance exceeds total amount', false);
+    }
+  } else {
+    setHint('pend', 'This will be calculated automatically', false);
+  }
+}
+
+function validate(){
+  let ok=true;
+  console.log('Validating form...');
+  console.log('Name:', nameEl.value);
+  console.log('Phone:', phoneEl.value);
+  console.log('Date:', dateEl.value);
+  console.log('Total Amount:', totalAmountEl.value);
+  console.log('Advance:', advEl.value);
+  
+  if(!nameEl.value.trim()){ setHint('name','Name is required'); ok=false } else setHint('name','Looks good ✓',true);
+  if(!/^[0-9]{10}$/.test(phoneEl.value.trim())){ setHint('phone','Enter 10-digit phone'); ok=false } else setHint('phone','Valid ✓',true);
+  if(!dateEl.value){ setHint('date','Select a date'); ok=false } else setHint('date','Ok ✓',true);
+  if(totalAmountEl.value==='' || +totalAmountEl.value<=0){ setHint('totalAmount','Enter valid total amount'); ok=false } else setHint('totalAmount','Ok ✓',true);
+  if(advEl.value==='' || +advEl.value<0){ setHint('adv','Enter valid advance amount'); ok=false } else setHint('adv','Ok ✓',true);
+  
+  // Validate that advance doesn't exceed total
+  const totalAmount = parseFloat(totalAmountEl.value) || 0;
+  const advanceAmount = parseFloat(advEl.value) || 0;
+  if (advanceAmount > totalAmount) {
+    setHint('adv','Advance cannot exceed total amount'); ok=false;
+  }
+  
+  console.log('Validation result:', ok);
+  return ok;
+}
+
+// Check if a non‑cancelled booking already exists for a given date
+function isDateAlreadyBooked(dateStr) {
+  if (!dateStr) return false;
+  return bookings.some(b => b && b.date === dateStr && b.status !== 'cancelled');
+}
+
+// Attractive popup for date conflict (hall already booked)
+const dateConflictModal = $('#dateConflictModal');
+const dateConflictText = $('#dateConflictText');
+const dateConflictOkBtn = $('#dateConflictOkBtn');
+
+function showDateConflictModal(dateStr) {
+  if (!dateConflictModal) return;
+  let niceDate = dateStr;
+  if (dateStr) {
+    const parsed = new Date(dateStr + 'T00:00:00');
+    if (!isNaN(parsed.getTime())) {
+      niceDate = parsed.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
+  if (dateConflictText) {
+    dateConflictText.innerHTML = `
+      The hall is already booked on <strong>${niceDate}</strong>.<br>
+      Please pick another available date from the calendar to continue the booking.
+    `;
+  }
+  dateConflictModal.style.display = 'flex';
+}
+
+function hideDateConflictModal() {
+  if (!dateConflictModal) return;
+  dateConflictModal.style.display = 'none';
+}
+
+if (dateConflictOkBtn) {
+  dateConflictOkBtn.addEventListener('click', hideDateConflictModal);
+}
+if (dateConflictModal) {
+  dateConflictModal.addEventListener('click', (e) => {
+    if (e.target === dateConflictModal) hideDateConflictModal();
+  });
+}
+// Add event listeners for validation
+[nameEl,phoneEl,dateEl,totalAmountEl,advEl].forEach(input=>{
+  input.addEventListener('input', validate);
+});
+
+// Add event listeners for auto-calculation
+[totalAmountEl,advEl].forEach(input=>{
+  input.addEventListener('input', calculatePendingAmount);
+});
+
+const bookingFormEventList = $('#bookingFormEventList');
+function renderEvents(){
+  if (!bookingFormEventList) return;
+  bookingFormEventList.innerHTML='';
+  
+  // Group bookings by customer (phone number)
+  const customerGroups = {};
+  
+  bookings.forEach(b => {
+    if (!customerGroups[b.phone]) {
+      customerGroups[b.phone] = [];
+    }
+    customerGroups[b.phone].push(b);
+  });
+  
+  // Create a list item for each customer group
+  Object.keys(customerGroups).forEach(phone => {
+    const customerBookings = customerGroups[phone];
+    // Sort customer's bookings by date
+    customerBookings.sort((a, b) => a.date.localeCompare(b.date));
+    
+    // Get customer name from first booking
+    const customerName = customerBookings[0].name;
+    
+    // Create customer section
+    const customerSection = document.createElement('div');
+    customerSection.className = 'card';
+    customerSection.style.marginBottom = '16px';
+    
+    // Create customer header
+    const customerHeader = document.createElement('div');
+    customerHeader.className = 'customer-header';
+    customerHeader.style.borderBottom = '1px solid #e2e8f0';
+    customerHeader.style.paddingBottom = '8px';
+    customerHeader.style.marginBottom = '10px';
+    customerHeader.style.display = 'flex';
+    customerHeader.style.justifyContent = 'space-between';
+    customerHeader.style.alignItems = 'center';
+    
+    customerHeader.innerHTML = `
+      <div>
+        <h4 style="margin: 0; font-size: 16px;"><i class="fa-solid fa-user"></i> ${customerName}</h4>
+        <div style="font-size: 13px; color: var(--muted);"><i class="fa-solid fa-phone"></i> ${phone}</div>
+      </div>
+      <div>
+        <span class="tag ${customerBookings.some(b => +b.pending > 0) ? 'medium' : 'low'}">
+          ${customerBookings.some(b => +b.pending > 0) ? 'Payment Pending' : 'All Paid'}
+        </span>
+      </div>
+    `;
+    
+    customerSection.appendChild(customerHeader);
+    
+    // Create bookings list for this customer
+    const bookingsList = document.createElement('div');
+    bookingsList.className = 'customer-bookings';
+    bookingsList.style.display = 'flex';
+    bookingsList.style.flexDirection = 'column';
+    bookingsList.style.gap = '10px';
+    
+    customerBookings.forEach(b => {
+      const bookingItem = document.createElement('div');
+      bookingItem.className = 'booking-item';
+      bookingItem.id = `booking-${b.id}`;
+      bookingItem.style.padding = '8px';
+      bookingItem.style.borderRadius = '8px';
+      bookingItem.style.backgroundColor = '#f8fafc';
+      
+      const isCancelled = b.status === 'cancelled';
+      const cancelledStyle = isCancelled ? 'opacity: 0.6; background-color: #fee2e2; border-left: 4px solid #ef4444;' : '';
+      
+      bookingItem.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; ${cancelledStyle}">
+          <div>
+            <div><strong>${b.date}</strong> · ${b.type} ${isCancelled ? '<span class="tag high" style="margin-left: 8px;">CANCELLED</span>' : ''}</div>
+            ${b.session ? `<div><i class="fa-solid fa-clock"></i> Session: ${b.session}</div>` : ''}
+            <div>
+              <i class="fa-solid fa-calculator"></i> Total: ₹${b.totalAmount || 'N/A'} · 
+              <i class="fa-solid fa-money-bill-wave"></i> Advance: ₹${b.advance} (via ${b.advanceMode || 'N/A'})
+            </div>
+            <div>
+              <i class="fa-solid fa-credit-card"></i> Pending: ₹${b.pending}
+              ${b.pending === 0 && b.pendingMode ? `<span class="tag low" style="margin-left: 8px;">Paid via ${b.pendingMode}${b.pendingPaidOn ? ` on ${b.pendingPaidOn}` : ''}</span>` : ''}
+            </div>
+            ${isCancelled ? `
+              <div style="margin-top: 8px; padding: 8px; background: #fef2f2; border-radius: 6px; border-left: 3px solid #ef4444;">
+                <div><i class="fa-solid fa-money-bill-wave"></i> <strong>Refunded:</strong> ₹${b.refundAmount} (via ${b.refundMode})</div>
+                <div><i class="fa-solid fa-calendar"></i> <strong>Refund Date:</strong> ${b.refundDate}</div>
+                <div><i class="fa-solid fa-comment"></i> <strong>Reason:</strong> ${b.refundReason}</div>
+              </div>
+            ` : ''}
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            ${!isCancelled ? `
+              ${b.pending > 0 ? `<button class="btn secondary pay-pending-btn" data-id="${b.id}" style="padding: 4px 10px; font-size: 12px;">Pay Pending</button>` : ''}
+              <button class="btn secondary cancel-booking-btn" data-id="${b.id}" style="padding: 4px 10px; font-size: 12px; background: #ef4444; color: white;">Cancel & Refund</button>
+            ` : `
+              <span class="tag high" style="padding: 4px 10px; font-size: 12px;">Refund Processed</span>
+            `}
+          </div>
+        </div>
+      `;
+      
+      bookingsList.appendChild(bookingItem);
+    });
+    
+    customerSection.appendChild(bookingsList);
+    bookingFormEventList.appendChild(customerSection);
+  });
+}
+
+$('#bookingForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  console.log('Form submitted!');
+  
+  if(!validate()) {
+    console.log('Form validation failed');
+    return;
+  }
+  console.log('Form validation passed');
+
+  // Block booking if hall already booked on this date
+  if (isDateAlreadyBooked(dateEl.value)) {
+    const msg = '❌ This hall is already booked on the selected date. Please choose another date.';
+    console.warn(msg, 'Date:', dateEl.value);
+    const formMsgEl = $('#formMsg');
+    if (formMsgEl) {
+      formMsgEl.textContent = msg;
+      formMsgEl.className = 'hint err';
+    }
+    // Show nicer modal instead of basic browser alert
+    showDateConflictModal(dateEl.value);
+    return;
+  }
+  
+  const btn = $('#saveBtn');
+  showSpinner(btn,true);
+  
+  try {
+    const bookingData = {
+      name: nameEl.value.trim(),
+      phone: phoneEl.value.trim(),
+      functionType: typeEl.value,
+      date: dateEl.value,
+      totalAmount: +totalAmountEl.value,
+      advance: +advEl.value,
+      advanceMode: paymentModeEl.value,
+      pending: +pendEl.value,
+      session: sessionEl.value
+    };
+    
+    console.log('Booking data:', bookingData);
+    const savedBooking = await saveBooking(bookingData);
+    console.log('Save booking result:', savedBooking);
+    
+    if (savedBooking) {
+      renderEvents(); // Update the booking form events list
+      renderCalendar(); // Update the calendar
+      renderUpcomingCustomers(); // Update the upcoming events list
+      updateCertificateButtonVisibility(savedBooking);
+      await generateCertificatePdf(savedBooking); // Generate professional certificate PDF
+      sendCertificateWhatsApp(savedBooking); // Trigger WhatsApp certificate message
+      // Also send reminder of upcoming functions to permanent number
+      setTimeout(() => { try { sendUpcomingReminderWhatsApp(); } catch (e) { console.error('Reminder send failed:', e); } }, 800);
+      $('#formMsg').textContent='✅ Booking saved successfully!';
+      $('#formMsg').className='hint ok';
+      e.target.reset();
+    } else {
+      updateCertificateButtonVisibility(null);
+      $('#formMsg').textContent='❌ Failed to save booking. Please try again.';
+      $('#formMsg').className='hint err';
+    }
+  } catch (error) {
+    console.error('Booking submission error:', error);
+    updateCertificateButtonVisibility(null);
+    $('#formMsg').textContent='❌ Error saving booking. Please try again.';
+    $('#formMsg').className='hint err';
+  } finally {
+    showSpinner(btn,false);
+  }
+});
+
+/* ========================
+   Toggle Booking Form Events List
+======================== */
+const toggleEventsBtn = $('#toggleEventsBtn');
+
+toggleEventsBtn.addEventListener('click', () => {
+  const isCurrentlyHidden = getComputedStyle(bookingFormEventList).display === 'none';
+  
+  if (isCurrentlyHidden) {
+    bookingFormEventList.style.display = 'block';
+    toggleEventsBtn.innerHTML = 'Hide List <i class="fa-solid fa-chevron-up"></i>';
+    renderEvents(); // Render the events when showing
+  } else {
+    bookingFormEventList.style.display = 'none';
+    toggleEventsBtn.innerHTML = 'Show List <i class="fa-solid fa-chevron-down"></i>';
+  }
+});
+
+/* ========================
+   Settle Pending Payments Modal
+======================== */
+const settleModal = $('#settleModal');
+const settleModalText = $('#settleModalText', settleModal);
+const settlePaymentModeInput = $('#settlePaymentMode', settleModal);
+const settleOkBtn = $('#settleOkBtn', settleModal);
+const settleCancelBtn = $('#settleCancelBtn', settleModal);
+
+function closeSettleModal() {
+  settleModal.style.display = 'none';
+  // Reset any error styling
+  settlePaymentModeInput.style.borderColor = '';
+}
+
+// Get reference to all Pay Pending buttons
+const payPendingBtns = document.querySelectorAll('.pay-pending-btn');
+
+// Add event listener to document to handle dynamically created buttons
+document.addEventListener('click', e => {
+    const payBtn = e.target.closest('.pay-pending-btn');
+    if (payBtn) {
+      const bookingId = payBtn.dataset.id;
+      const booking = bookings.find(b => b.id === bookingId);
+      if (!booking) return;
+
+      // Show the custom modal
+      settleModal.dataset.bookingId = bookingId;
+      settleModalText.innerHTML = `How was the pending amount of <strong>₹${booking.pending}</strong> paid?`;
+      settlePaymentModeInput.value = '';
+      settleModal.style.display = 'flex';
+      settlePaymentModeInput.focus();
+      return;
+    }
+
+    const cancelBtn = e.target.closest('.cancel-booking-btn');
+    if (cancelBtn) {
+      const bookingId = cancelBtn.dataset.id;
+      const booking = bookings.find(b => b.id === bookingId);
+      if (!booking) return;
+
+      // Show refund modal
+      showRefundModal(booking);
+      return;
+    }
+});
+
+settleOkBtn.addEventListener('click', async () => {
+    const bookingId = settleModal.dataset.bookingId;
+    const paymentMode = settlePaymentModeInput.value.trim();
+    
+    if (!bookingId || !paymentMode) {
+        settlePaymentModeInput.style.borderColor = '#ef4444'; // Use danger color from root
+        settlePaymentModeInput.focus();
+        return;
+    }
+    
+    // Find booking locally
+    const booking = bookings.find(b => b.id === bookingId);
+    if (!booking) {
+      alert('Booking not found.');
+      return;
+    }
+
+    // Optimistically update local data: set pending to 0 and record payment details
+    const paidOn = new Date().toISOString().slice(0,10);
+    booking.pending = 0;
+    booking.pendingMode = paymentMode;
+    booking.pendingPaidOn = paidOn;
+
+    // Persist local change and update UI immediately
+    try { localStorage.setItem('bookings', JSON.stringify(bookings)); } catch(e){ /* ignore */ }
+    
+    // Update database
+    updateBookingInDatabase(bookingId, {
+      pending: 0,
+      pendingMode: paymentMode,
+      pendingPaidOn: paidOn
+    });
+    
+    renderEvents();
+    closeSettleModal();
+
+    // Attempt server update (best-effort). Failure won't revert optimistic update.
+    try {
+        const success = await settlePayment(bookingId, paymentMode);
+        if (!success) {
+            console.warn('Server did not confirm settlement — local update kept.');
+        }
+    } catch (err) {
+        console.warn('Settle API failed — local update applied (offline mode).', err);
+    }
+});
+
+settleCancelBtn.addEventListener('click', closeSettleModal);
+
+settleModal.addEventListener('click', (e) => {
+    if (e.target === settleModal) {
+        closeSettleModal();
+    }
+});
+
+// Reset input error style on input
+settlePaymentModeInput.addEventListener('input', () => {
+    if (settlePaymentModeInput.value.trim()) {
+        settlePaymentModeInput.style.borderColor = '';
+    }
+});
+
+/* ========================
+   Refund Modal Functions
+======================== */
+const refundModal = $('#refundModal');
+const refundModalText = $('#refundModalText');
+const refundAmountInput = $('#refundAmount');
+const refundModeSelect = $('#refundMode');
+const refundReasonTextarea = $('#refundReason');
+const refundConfirmBtn = $('#refundConfirmBtn');
+const refundCancelBtn = $('#refundCancelBtn');
+
+function showRefundModal(booking) {
+  const totalPaid = booking.advance + (booking.pending === 0 ? booking.totalAmount - booking.advance : 0);
+  
+  refundModal.dataset.bookingId = booking.id;
+  refundModalText.innerHTML = `
+    <strong>Customer:</strong> ${booking.name}<br>
+    <strong>Event Date:</strong> ${booking.date}<br>
+    <strong>Event Type:</strong> ${booking.functionType || booking.type}<br>
+    <strong>Total Amount:</strong> ₹${booking.totalAmount}<br>
+    <strong>Advance Paid:</strong> ₹${booking.advance}<br>
+    <strong>Pending:</strong> ₹${booking.pending}
+  `;
+  
+  refundAmountInput.value = totalPaid;
+  refundModeSelect.value = 'cash';
+  refundReasonTextarea.value = '';
+  
+  refundModal.style.display = 'flex';
+  refundReasonTextarea.focus();
+}
+
+function closeRefundModal() {
+  refundModal.style.display = 'none';
+}
+
+// Refund modal event listeners
+refundCancelBtn.addEventListener('click', closeRefundModal);
+refundModal.addEventListener('click', (e) => {
+  if (e.target === refundModal) {
+    closeRefundModal();
+  }
+});
+
+refundConfirmBtn.addEventListener('click', async () => {
+  const bookingId = refundModal.dataset.bookingId;
+  const refundAmount = parseFloat(refundAmountInput.value);
+  const refundMode = refundModeSelect.value;
+  const refundReason = refundReasonTextarea.value.trim();
+  
+  if (!refundReason) {
+    alert('Please enter a reason for cancellation.');
+    refundReasonTextarea.focus();
+    return;
+  }
+  
+  if (!confirm(`Are you sure you want to cancel this booking and process a refund of ₹${refundAmount}?`)) {
+    return;
+  }
+  
+  // Find booking
+  const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+  if (bookingIndex === -1) {
+    alert('Booking not found.');
+    return;
+  }
+  
+  const booking = bookings[bookingIndex];
+  
+  // Update booking with refund information
+  booking.status = 'cancelled';
+  booking.refundAmount = refundAmount;
+  booking.refundMode = refundMode;
+  booking.refundReason = refundReason;
+  booking.refundDate = new Date().toISOString().slice(0, 10);
+  booking.cancelledOn = new Date().toISOString();
+  
+  // Save to localStorage
+  localStorage.setItem('bookings', JSON.stringify(bookings));
+  
+  // Update database
+  updateBookingInDatabase(bookingId, {
+    status: 'cancelled',
+    refundAmount: refundAmount,
+    refundMode: refundMode,
+    refundReason: refundReason,
+    refundDate: new Date().toISOString().slice(0, 10),
+    cancelledOn: new Date().toISOString()
+  });
+  
+  // Update UI
+  renderEvents();
+  renderCalendar();
+  renderUpcomingCustomers();
+  
+  closeRefundModal();
+  
+  alert(`✅ Booking cancelled successfully!\n\nRefund Details:\nAmount: ₹${refundAmount}\nMethod: ${refundMode}\nReason: ${refundReason}`);
+});
+
+/* ========================
+   Toggle Upcoming Events
+======================== */
+const toggleUpcomingEventsBtn = $('#toggleUpcomingEventsBtn'); // Target the button in the dedicated Upcoming Events Section
+const upcomingEventsListEl = $('#upcomingEventsList'); // Target the list in the dedicated Upcoming Events Section
+const EVENTS_PASSWORD = '555855'; // Password for protection
+const CERTIFICATE_SEPARATOR = '───────────────────────────────';
+const certificateBtn = $('#certificateBtn');
+let lastSavedBooking = null;
+
+// Password modal elements
+const pwModalOverlay = $('#pwModalOverlay');
+const pwModal = $('#pwModal');
+const pwInput = $('#pwInput');
+const pwError = $('#pwError');
+const pwSubmit = $('#pwSubmit');
+const pwCancel = $('#pwCancel');
+const pwToggle = $('#pwToggle');
+
+// Password modal functions
+function showPasswordModal() {
+  pwModalOverlay.classList.add('show');
+  pwInput.value = '';
+  pwError.textContent = '';
+  pwInput.focus();
+  document.body.style.overflow = 'hidden';
+}
+
+function hidePasswordModal() {
+  pwModalOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function validatePassword() {
+  const input = pwInput.value.trim();
+  if (input === EVENTS_PASSWORD) {
+    hidePasswordModal();
+    // Password correct — show list
+    upcomingEventsListEl.style.display = 'flex';
+    toggleUpcomingEventsBtn.innerHTML = 'Hide List <i class="fa-solid fa-chevron-up"></i>';
+    $('#exportToExcelBtn').style.display = 'inline-flex';
+    $('#exportAllToExcelBtn').style.display = 'inline-flex';
+    $('#saveDatabaseBtn').style.display = 'inline-flex';
+    renderUpcomingCustomers(); // Render the list dynamically
+    return true;
+  } else {
+    pwError.textContent = 'Wrong password!';
+    pwModal.classList.add('shake');
+    setTimeout(() => pwModal.classList.remove('shake'), 400);
+    return false;
+  }
+}
+
+// Password modal event listeners
+pwSubmit.addEventListener('click', validatePassword);
+pwCancel.addEventListener('click', hidePasswordModal);
+pwInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    validatePassword();
+  }
+});
+
+// Password toggle functionality
+pwToggle.addEventListener('click', () => {
+  const isPassword = pwInput.type === 'password';
+  pwInput.type = isPassword ? 'text' : 'password';
+  pwToggle.textContent = isPassword ? 'Hide' : 'Show';
+  pwToggle.setAttribute('aria-pressed', !isPassword);
+});
+
+// Close modal when clicking outside
+pwModalOverlay.addEventListener('click', (e) => {
+  if (e.target === pwModalOverlay) {
+    hidePasswordModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && pwModalOverlay.classList.contains('show')) {
+    hidePasswordModal();
+  }
+});
+
+toggleUpcomingEventsBtn.addEventListener('click', () => {
+  const isCurrentlyHidden = getComputedStyle(upcomingEventsListEl).display === 'none';
+
+  if (isCurrentlyHidden) {
+    // Show password modal instead of prompt
+    showPasswordModal();
+  } else {
+    // Hide list
+    upcomingEventsListEl.style.display = 'none';
+    toggleUpcomingEventsBtn.innerHTML = 'Show List for payPending<i class="fa-solid fa-chevron-down"></i>';
+    $('#exportToExcelBtn').style.display = 'none';
+    $('#exportAllToExcelBtn').style.display = 'none';
+    $('#saveDatabaseBtn').style.display = 'none';
+  }
+});
+
+/* ========================
+   Render Upcoming Events
+======================== */
+function renderUpcomingCustomers() { // This function is called after password entry
+  const listEl = $('#upcomingEventsList'); // Ensure it targets the correct, password-protected list
+  if (!listEl) return;
+  listEl.innerHTML = '';
+
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  // Filter bookings between month-start and month-end (exclude cancelled)
+  const monthEvents = bookings
+    .filter(b => b && b.date && b.status !== 'cancelled')
+    .map(b => ({
+      ...b,
+      eventDate: new Date(`${b.date}T23:59:59`)
+    }))
+    .filter(b => !isNaN(b.eventDate))
+    .filter(b => b.eventDate >= monthStart && b.eventDate <= monthEnd)
+    .sort((a, b) => a.eventDate - b.eventDate);
+
+  const tFn = (window.t || ((k)=>k));
+  if (monthEvents.length === 0) {
+    listEl.innerHTML = `
+      <div style="text-align: center; padding: 20px; color: var(--muted);">
+        <i class="fa-solid fa-calendar-xmark" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+        <div>${tFn('list.empty')}</div>
+        <div style="font-size: 12px; margin-top: 5px;">${tFn('list.empty.sub')}</div>
+        ${bookings.length === 0 ? `
+          <button onclick="createSampleData()" class="btn secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 14px;">
+            <i class="fa-solid fa-plus"></i> Create Sample Data
+          </button>
+        ` : ''}
+      </div>
+    `;
+    return;
+  }
+
+  // Monthly summary totals
+  const grossTotal = monthEvents.reduce((sum, b) => sum + (+b.totalAmount || 0), 0);
+  const pendingTotal = monthEvents.reduce((sum, b) => sum + (+b.pending || 0), 0);
+  const netTotal = grossTotal - pendingTotal;
+  const monthLabel = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  const summary = document.createElement('div');
+  summary.className = 'card';
+  summary.style.display = 'flex';
+  summary.style.justifyContent = 'space-between';
+  summary.style.alignItems = 'center';
+  summary.style.padding = '10px';
+  summary.innerHTML = `
+    <div>
+      <div style="font-weight:700">${tFn('summary.title')} (${monthLabel})</div>
+      <div style="font-size:12px; color:var(--muted)">${monthEvents.length} ${tFn('summary.bookingsCountSuffix')}</div>
+    </div>
+    <div style="display:flex; gap:16px; align-items:center;">
+      <div style="text-align:right; min-width:90px;">
+        <div style="font-size:12px; color:var(--muted)">${tFn('summary.gross')}</div>
+        <div style="font-weight:700">₹${grossTotal}</div>
+      </div>
+      <div style="text-align:right; min-width:90px;">
+        <div style="font-size:12px; color:var(--muted)">${tFn('summary.net')}</div>
+        <div style="font-weight:700">₹${netTotal}</div>
+      </div>
+      <div style="text-align:right; min-width:90px;">
+        <div style="font-size:12px; color:var(--muted)">${tFn('summary.pending')}</div>
+        <div style="font-weight:700">₹${pendingTotal}</div>
+      </div>
+    </div>
+  `;
+  listEl.appendChild(summary);
+
+  monthEvents.forEach(b => {
+    const item = document.createElement('div');
+    item.className = 'card';
+    item.style.display = 'flex';
+    item.style.justifyContent = 'space-between';
+    item.style.alignItems = 'center';
+    item.style.padding = '10px';
+    item.innerHTML = `
+      <div>
+        <div style="font-weight:700">${escapeHtml(b.name || '—')} <span style="font-weight:600; color:var(--muted); font-size:13px">· ${escapeHtml(b.phone || '')}</span></div>
+        <div style="color:var(--muted)">${escapeHtml(b.date)} · ${escapeHtml(b.functionType || b.type || '')} ${b.session ? '· '+escapeHtml(b.session) : ''}</div>
+        <div style="font-size:12px; color:var(--muted)">${tFn('list.total')}: ₹${(+b.totalAmount||0)} · ${tFn('list.received')}: ₹${((+b.totalAmount||0) - (+b.pending||0))}</div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <div style="text-align:right; min-width:110px;">
+          <div style="font-weight:700">₹${(b.pending || 0)}</div>
+          <div style="font-size:12px; color:var(--muted)">${(+b.pending > 0) ? tFn('status.pending') : tFn('status.paid')}</div>
+        </div>
+        ${(+b.pending > 0) ? `<button class=\"btn secondary pay-pending-btn\" data-id=\"${b.id}\" style=\"padding:6px 10px; font-size:13px;\">Settle</button>` : ''}
+      </div>
+    `;
+    listEl.appendChild(item);
+  });
+}
+
+// Helper to escape HTML (avoid XSS)
+function escapeHtml(s) {
+  if (!s && s !== 0) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function updateCertificateButtonVisibility(booking) {
+  lastSavedBooking = booking || null;
+  if (!certificateBtn) return;
+  certificateBtn.style.display = booking ? 'inline-flex' : 'none';
+}
+
+updateCertificateButtonVisibility(null);
+
+function buildWhatsAppMessage(booking) {
+  const lines = [
+    CERTIFICATE_SEPARATOR,
+    '        SB STAR LAWN',
+    '   Booking Confirmation Certificate',
+    CERTIFICATE_SEPARATOR,
+    `Customer Name : ${booking.name || '—'}`,
+    `Phone Number  : ${booking.phone || '—'}`,
+    `Function      : ${formatFunctionLabel(booking.functionType || booking.type)}`,
+    `Session       : ${booking.session || '—'}`,
+    `Event Date    : ${formatCertificateDate(booking.date)}`,
+    '',
+    CERTIFICATE_SEPARATOR,
+    `Total Amount  : ₹ ${formatCurrency(booking.totalAmount)}`,
+    `Advance Paid  : ₹ ${formatCurrency(booking.advance)}`,
+    `Pending Due   : ₹ ${formatCurrency(booking.pending)}`,
+    CERTIFICATE_SEPARATOR,
+    '',
+    'Thank you for choosing SB STAR LAWN!',
+    'We look forward to making your event memorable.',
+    '',
+    'Authorized by : Sadik Faruk Bahwan ...',
+    '               Faruk Gafar Bagwan...',
+    CERTIFICATE_SEPARATOR,
+    
+    '*कार्यालय भाडे संदर्भी सूचना – S.V. STAR LAWN*',
+    '1. कोणताही कार्यक्रम लहान/मोठा असो, भाड्याचे पॅकेज ठरलेले असेल.',
+    'पूर्ण रक्कम जमा झाल्यानंतर कार्यालयाचा ताबा मिळेल.',
+    'बुक केलेला कार्यक्रम रद्द झाल्यास अ‍ॅडव्हान्स परत दिला जाणार नाही.',
+    '2. भाड्याच्या पॅकेजमध्ये हॉल, पाणी, वीज, टेबल-खुर्च्या, सर्व भांडी इत्यादी सुविधा मिळतील.',
+    '3. कार्यालयाचा ताबा कार्यक्रमाच्या दिवशी ठरलेल्या वेळेआधी दोन तास आधी मिळेल.',
+    'कार्यक्रमानंतर ठरलेल्या वेळेत कार्यालय रिकामे करून द्यावे.',
+    '4. हॉल, टेबल, खुर्च्या, भांडी वापरून मोडतोड अथवा कमी झाल्यास नुकसान भरपाई घेतली जाईल.',
+    'वापरलेले सर्व साहित्य स्वच्छ करून परत करणे आवश्यक आहे.',
+    '5.  हॉल स्वच्छतेसाठी कार्यालयाने नेमलेल्या बायकांचे रु.५००/- शुल्क बुकिंगवेळी वेगळे घ्यावे लागेल.',
+    '6. लाईट गेल्यास 3 केव्ही क्षमतेच्या जनरेटरची सुविधा आहे.',
+    'डिझेल स्वतः खर्चाने आणल्यास जनरेटर सुरु करून दिला जाईल.',
+    '7. कार्यालयात जितके फॅन, ट्यूबलाईट असतील तेवढाच वापर करणे आहे.',
+    'अतिरिक्त उपकरण वापरल्यास लोड वाढू शकतो.',
+    'मोठ्या जनरेटरची सोय स्वतः करावी.',
+    '',
+    '8. धूम्रपान, दारू, मावा, गुटखा यांचा वापर व थुंकणे सख्त मनाई आहे.',
+    'स्वच्छता राखा.',
+    '*ऑफिस नं.: 8600754517*',
+    CERTIFICATE_SEPARATOR
+  ];
+  return lines.join('\n');
+}
+
+function sendCertificateWhatsApp(booking) {
+  try {
+    if (!booking) return;
+    const message = buildWhatsAppMessage(booking);
+    const ownerFallbackNumber = '919881935558';
+    const rawPhone = (booking.phone || '').replace(/\D/g, '');
+    let targetNumber = ownerFallbackNumber;
+
+    if (rawPhone.length === 10) {
+      targetNumber = `91${rawPhone}`;
+    } else if (rawPhone.length > 10) {
+      targetNumber = rawPhone;
+    }
+
+    const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank', 'noopener');
+  } catch (error) {
+    console.error('Unable to trigger WhatsApp certificate message:', error);
+  }
+}
+
+function buildOfficeNoticeMessage() {
+  const lines = [
+    '*🏢 कार्यालय भाडे संदर्भी सूचना – S.V. STAR LAWN*',
+    '- कोणताही कार्यक्रम लहान/मोठा असो, भाड्याचे पॅकेज ठरलेले असेल.',
+    'पूर्ण रक्कम जमा झाल्यानंतर कार्यालयाचा ताबा मिळेल.',
+    'बुक केलेला कार्यक्रम रद्द झाल्यास अ‍ॅडव्हान्स परत दिला जाणार नाही.',
+    '- भाड्याच्या पॅकेजमध्ये हॉल, पाणी, वीज, टेबल-खुर्च्या, सर्व भांडी इत्यादी सुविधा मिळतील.',
+    '- कार्यालयाचा ताबा कार्यक्रमाच्या दिवशी ठरलेल्या वेळेआधी दोन तास आधी मिळेल.',
+    'कार्यक्रमानंतर ठरलेल्या वेळेत कार्यालय रिकामे करून द्यावे.',
+    '- हॉल, टेबल, खुर्च्या, भांडी वापरून मोडतोड अथवा कमी झाल्यास नुकसान भरपाई घेतली जाईल.',
+    'वापरलेले सर्व साहित्य स्वच्छ करून परत करणे आवश्यक आहे.',
+    '- हॉल स्वच्छतेसाठी कार्यालयाने नेमलेल्या बायकांचे रु.५००/- शुल्क बुकिंगवेळी वेगळे घ्यावे लागेल.',
+    '- लाईट गेल्यास 3 केव्ही क्षमतेच्या जनरेटरची सुविधा आहे.',
+    'डिझेल स्वतः खर्चाने आणल्यास जनरेटर सुरु करून दिला जाईल.',
+    '- कार्यालयात जितके फॅन, ट्यूबलाईट असतील तेवढाच वापर करणे आहे.',
+    'अतिरिक्त उपकरण वापरल्यास लोड वाढू शकतो.',
+    'मोठ्या जनरेटरची सोय स्वतः करावी.',
+    '',
+    'जर तुला याचा इंग्रजी अनुवाद, डॉक्युमेंट फॉर्मॅटिंग किंवा नोटिस डिझाइन हवा असेल, तर मी मदत करू शकतो!',
+    '',
+    '*ऑफिस नं.: 8600754517*',
+    '🚭 धूम्रपान, दारू, मावा, गुटखा यांचा वापर व थुंकणे सख्त मनाई आहे.',
+    'स्वच्छता राखा.'
+  ];
+  return lines.join('\n');
+}
+
+function sendOfficeNoticeWhatsApp(booking) {
+  try {
+    if (!booking) return;
+    const message = buildOfficeNoticeMessage();
+    const ownerFallbackNumber = '919881935558';
+    const rawPhone = (booking.phone || '').replace(/\D/g, '');
+    let targetNumber = ownerFallbackNumber;
+
+    if (rawPhone.length === 10) {
+      targetNumber = `91${rawPhone}`;
+    } else if (rawPhone.length > 10) {
+      targetNumber = rawPhone;
+    }
+
+    const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank', 'noopener');
+  } catch (error) {
+    console.error('Unable to trigger WhatsApp office notice message:', error);
+  }
+}
+
+// Send WhatsApp reminder to permanent number about upcoming functions
+function sendUpcomingReminderWhatsApp() {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = (bookings || [])
+      .filter(b => b && b.date && b.status !== 'cancelled')
+      .filter(b => {
+        const dt = new Date(b.date + 'T00:00:00');
+        return dt >= today;
+      })
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    const lines = [
+      CERTIFICATE_SEPARATOR,
+      '🔔 Reminder: Upcoming Functions',
+      `Generated on: ${new Date().toLocaleDateString()}`
+    ];
+
+    if (upcoming.length === 0) {
+      lines.push('No upcoming bookings found.');
+    } else {
+      lines.push('Next bookings:');
+      upcoming.slice(0, 10).forEach((b, i) => {
+        const d = new Date(b.date + 'T00:00:00').toLocaleDateString();
+        const typ = b.functionType || b.type || 'Other';
+        const name = b.name || '';
+        const sess = b.session ? ` (${b.session})` : '';
+        lines.push(`${i + 1}. ${d} — ${typ}${sess} — ${name}`);
+      });
+    }
+
+    lines.push(CERTIFICATE_SEPARATOR);
+    const message = lines.join('\n');
+
+    // Permanent target number
+    const targetNumber = '919881935558';
+    const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank', 'noopener');
+  } catch (error) {
+    console.error('Unable to trigger WhatsApp upcoming reminder:', error);
+  }
+}
+
+function formatCurrency(value) {
+  if (value === null || value === undefined || isNaN(+value)) return '0';
+  return (+value).toLocaleString('en-IN', { minimumFractionDigits: 0 });
+}
+
+async function generateCertificatePdf(booking) {
+  try {
+    if (!booking || !window.PDFLib) {
+      console.warn('PDFLib not available or booking missing');
+      return null;
+    }
+    const { PDFDocument, StandardFonts, rgb } = PDFLib;
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([595, 842]); // A4 portrait
+    const { width, height } = page.getSize();
+    const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontMono = await pdfDoc.embedFont(StandardFonts.Courier);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+    const drawCentered = (text, y, size, font = fontBold) => {
+      const textWidth = font.widthOfTextAtSize(text, size);
+      page.drawText(text, {
+        x: (width - textWidth) / 2,
+        y,
+        size,
+        font,
+        color: rgb(0.15, 0.15, 0.15)
+      });
+    };
+
+    drawCentered('SB STAR LAWN', height - 80, 26);
+    drawCentered('Booking Confirmation Certificate', height - 110, 16, fontRegular);
+
+    const bodyLines = [
+      CERTIFICATE_SEPARATOR,
+      '        SB STAR LAWN',
+      '   Booking Confirmation Certificate',
+      CERTIFICATE_SEPARATOR,
+      '',
+      `Customer Name : ${booking.name || '—'}`,
+      `Phone Number  : ${booking.phone || '—'}`,
+      `Function      : ${formatFunctionLabel(booking.functionType || booking.type)}`,
+      `Session       : ${booking.session || '—'}`,
+      `Event Date    : ${formatCertificateDate(booking.date)}`,
+      '',
+      CERTIFICATE_SEPARATOR,
+      `Total Amount  : ₹ ${formatCurrency(booking.totalAmount)}`,
+      `Advance Paid  : ₹ ${formatCurrency(booking.advance)}`,
+      `Pending Due   : ₹ ${formatCurrency(booking.pending)}`,
+      CERTIFICATE_SEPARATOR,
+      '',
+      'Thank you for choosing SB STAR LAWN!',
+      'We look forward to making your event memorable.',
+      '',
+      'Authorized by : Sadik Faruk Bahwan ...',
+      '               Faruk Gafar Bagwan...'
+    ];
+
+    let cursorY = height - 160;
+    bodyLines.forEach(line => {
+      const fontToUse = line.includes('SB STAR LAWN') && line.trim() ? fontBold : fontMono;
+      const textWidth = fontToUse.widthOfTextAtSize(line, 14);
+      page.drawText(line, {
+        x: (width - textWidth) / 2,
+        y: cursorY,
+        size: 14,
+        font: fontToUse,
+        color: rgb(0.1, 0.1, 0.1)
+      });
+      cursorY -= 20;
+    });
+
+    const fileName = `SB_STAR_LAWN_CERTIFICATE_${booking.name || 'Booking'}_${booking.date || formatDate(new Date())}.pdf`;
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 6000);
+    return fileName;
+  } catch (error) {
+    console.error('Failed to generate certificate PDF:', error);
+    return null;
+  }
+}
+
+if (certificateBtn) {
+  certificateBtn.addEventListener('click', async () => {
+    if (!lastSavedBooking) {
+      alert('Please save a booking before downloading the certificate.');
+      return;
+    }
+    await generateCertificatePdf(lastSavedBooking);
+    // Send combined certificate + office notice as one message
+    sendCertificateWhatsApp(lastSavedBooking);
+  });
+}
+
+/* ========================
+   Database System - Auto Save to Excel
+======================== */
+
+// Database configuration
+const DATABASE_CONFIG = {
+  mainFile: 'SB_STAR_LAWN_Database.csv',
+  backupFile: 'SB_STAR_LAWN_Backup.csv',
+  autoSave: true,
+  backupInterval: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+};
+
+// Initialize database
+function initializeDatabase() {
+  console.log('Initializing database system...');
+  
+  // Check if database exists in localStorage
+  const dbData = localStorage.getItem('excelDatabase');
+  if (!dbData) {
+    // Create initial database structure
+    const initialData = {
+      bookings: [],
+      lastBackup: Date.now(),
+      version: '1.0'
+    };
+    localStorage.setItem('excelDatabase', JSON.stringify(initialData));
+    console.log('Database initialized');
+  }
+  
+  // Set up auto-backup
+  if (DATABASE_CONFIG.autoSave) {
+    setInterval(autoBackupDatabase, DATABASE_CONFIG.backupInterval);
+  }
+}
+
+// Auto-save booking to database
+function saveBookingToDatabase(bookingData) {
+  try {
+    const dbData = JSON.parse(localStorage.getItem('excelDatabase') || '{"bookings":[]}');
+    
+    // Add booking with timestamp
+    const bookingRecord = {
+      ...bookingData,
+      id: bookingData.id || `db_${Date.now()}`,
+      bookingDate: new Date().toISOString().slice(0, 10),
+      bookingTime: new Date().toISOString(),
+      status: bookingData.status || 'Active'
+    };
+    
+    dbData.bookings.push(bookingRecord);
+    localStorage.setItem('excelDatabase', JSON.stringify(dbData));
+    
+    // Auto-save to Excel file
+    if (DATABASE_CONFIG.autoSave) {
+      saveDatabaseToExcel();
+    }
+    
+    console.log('Booking saved to database:', bookingRecord);
+    return true;
+  } catch (error) {
+    console.error('Error saving to database:', error);
+    return false;
+  }
+}
+
+// Update booking in database
+function updateBookingInDatabase(bookingId, updateData) {
+  try {
+    const dbData = JSON.parse(localStorage.getItem('excelDatabase') || '{"bookings":[]}');
+    const bookingIndex = dbData.bookings.findIndex(b => b.id === bookingId);
+    
+    if (bookingIndex !== -1) {
+      // Update booking with timestamp
+      dbData.bookings[bookingIndex] = {
+        ...dbData.bookings[bookingIndex],
+        ...updateData,
+        lastUpdated: new Date().toISOString()
+      };
+      
+      localStorage.setItem('excelDatabase', JSON.stringify(dbData));
+      
+      // Auto-save to Excel file
+      if (DATABASE_CONFIG.autoSave) {
+        saveDatabaseToExcel();
+      }
+      
+      console.log('Booking updated in database:', dbData.bookings[bookingIndex]);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error updating database:', error);
+    return false;
+  }
+}
+
+// Save entire database to Excel file
+function saveDatabaseToExcel() {
+  try {
+    const dbData = JSON.parse(localStorage.getItem('excelDatabase') || '{"bookings":[]}');
+    const bookings = dbData.bookings;
+    
+    if (bookings.length === 0) {
+      console.log('No data to save to Excel');
+      return;
+    }
+    
+    // Prepare Excel data with comprehensive columns
+    const excelData = [
+      [
+        'S.No',
+        'Booking ID',
+        'Customer Name',
+        'Phone Number',
+        'Event Date',
+        'Event Type',
+        'Session',
+        'Total Amount (₹)',
+        'Advance Paid (₹)',
+        'Pending Amount (₹)',
+        'Advance Payment Mode',
+        'Pending Payment Mode',
+        'Pending Paid Date',
+        'Booking Status',
+        'Refund Amount (₹)',
+        'Refund Mode',
+        'Refund Date',
+        'Cancellation Reason',
+        'Booking Date',
+        'Booking Time',
+        'Last Updated',
+        'Notes'
+      ]
+    ];
+    
+    // Add all booking records
+    bookings.forEach((booking, index) => {
+      excelData.push([
+        index + 1,
+        booking.id || '',
+        booking.name || '',
+        booking.phone || '',
+        booking.date || '',
+        booking.functionType || booking.type || '',
+        booking.session || '',
+        booking.totalAmount || 0,
+        booking.advance || 0,
+        booking.pending || 0,
+        booking.advanceMode || '',
+        booking.pendingMode || '',
+        booking.pendingPaidOn || '',
+        booking.status || 'Active',
+        booking.refundAmount || '',
+        booking.refundMode || '',
+        booking.refundDate || '',
+        booking.refundReason || '',
+        booking.bookingDate || '',
+        booking.bookingTime || '',
+        booking.lastUpdated || '',
+        booking.notes || ''
+      ]);
+    });
+    
+    // Create CSV content
+    const csvContent = excelData.map(row => 
+      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const filename = `SB_STAR_LAWN_Database_${currentDate}.csv`;
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log(`Database saved to Excel: ${filename} (${bookings.length} records)`);
+    
+    // Update last backup time
+    dbData.lastBackup = Date.now();
+    localStorage.setItem('excelDatabase', JSON.stringify(dbData));
+    
+  } catch (error) {
+    console.error('Error saving database to Excel:', error);
+  }
+}
+
+// Auto-backup function
+function autoBackupDatabase() {
+  console.log('Performing auto-backup...');
+  saveDatabaseToExcel();
+}
+
+// Load bookings from database
+function loadBookingsFromDatabase() {
+  try {
+    const dbData = JSON.parse(localStorage.getItem('excelDatabase') || '{"bookings":[]}');
+    return dbData.bookings || [];
+  } catch (error) {
+    console.error('Error loading from database:', error);
+    return [];
+  }
+}
+
+// Sync current bookings with database
+function syncBookingsWithDatabase() {
+  try {
+    const dbData = JSON.parse(localStorage.getItem('excelDatabase') || '{"bookings":[]}');
+    const currentBookings = bookings;
+    
+    // Update database with current bookings
+    dbData.bookings = currentBookings.map(booking => ({
+      ...booking,
+      lastSynced: new Date().toISOString()
+    }));
+    
+    localStorage.setItem('excelDatabase', JSON.stringify(dbData));
+    console.log('Bookings synced with database');
+    
+    // Auto-save to Excel
+    if (DATABASE_CONFIG.autoSave) {
+      saveDatabaseToExcel();
+    }
+  } catch (error) {
+    console.error('Error syncing with database:', error);
+  }
+}
+
+/* ========================
+   Excel Export Functionality
+======================== */
+function exportToExcel() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Get all upcoming bookings (exclude cancelled)
+  const upcomingBookings = bookings
+    .filter(b => b && b.date && b.status !== 'cancelled')
+    .filter(b => {
+      const dt = new Date(b.date + 'T00:00:00');
+      return dt >= today;
+    })
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (upcomingBookings.length === 0) {
+    alert('No upcoming bookings to export.');
+    return;
+  }
+
+  // Prepare data for Excel
+  const excelData = [
+    // Header row
+    [
+      'S.No',
+      'Customer Name',
+      'Phone Number',
+      'Event Date',
+      'Event Type',
+      'Session',
+      'Total Amount (₹)',
+      'Advance Paid (₹)',
+      'Pending Amount (₹)',
+      'Advance Payment Mode',
+      'Pending Payment Mode',
+      'Pending Paid Date',
+      'Booking Status',
+      'Booking Date'
+    ]
+  ];
+
+  // Add data rows
+  upcomingBookings.forEach((booking, index) => {
+    excelData.push([
+      index + 1,
+      booking.name || '',
+      booking.phone || '',
+      booking.date || '',
+      booking.functionType || booking.type || '',
+      booking.session || '',
+      booking.totalAmount || 0,
+      booking.advance || 0,
+      booking.pending || 0,
+      booking.advanceMode || '',
+      booking.pendingMode || '',
+      booking.pendingPaidOn || '',
+      booking.status || 'Active',
+      booking.bookingDate || new Date().toISOString().slice(0, 10)
+    ]);
+  });
+
+  // Create CSV content
+  const csvContent = excelData.map(row => 
+    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+  ).join('\n');
+
+  // Create and download file
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const filename = `SB_STAR_LAWN_Upcoming_Bookings_${currentDate}.csv`;
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Show success message
+  alert(`✅ Excel file exported successfully!\n\nFile: ${filename}\nRecords: ${upcomingBookings.length} bookings`);
+}
+
+function exportAllBookingsToExcel() {
+  // Get all bookings (including past and cancelled)
+  const allBookings = bookings
+    .filter(b => b && b.date)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (allBookings.length === 0) {
+    alert('No bookings to export.');
+    return;
+  }
+
+  // Prepare data for Excel with additional columns for cancelled bookings
+  const excelData = [
+    // Header row
+    [
+      'S.No',
+      'Customer Name',
+      'Phone Number',
+      'Event Date',
+      'Event Type',
+      'Session',
+      'Total Amount (₹)',
+      'Advance Paid (₹)',
+      'Pending Amount (₹)',
+      'Advance Payment Mode',
+      'Pending Payment Mode',
+      'Pending Paid Date',
+      'Booking Status',
+      'Refund Amount (₹)',
+      'Refund Mode',
+      'Refund Date',
+      'Cancellation Reason',
+      'Booking Date'
+    ]
+  ];
+
+  // Add data rows
+  allBookings.forEach((booking, index) => {
+    excelData.push([
+      index + 1,
+      booking.name || '',
+      booking.phone || '',
+      booking.date || '',
+      booking.functionType || booking.type || '',
+      booking.session || '',
+      booking.totalAmount || 0,
+      booking.advance || 0,
+      booking.pending || 0,
+      booking.advanceMode || '',
+      booking.pendingMode || '',
+      booking.pendingPaidOn || '',
+      booking.status || 'Active',
+      booking.refundAmount || '',
+      booking.refundMode || '',
+      booking.refundDate || '',
+      booking.refundReason || '',
+      booking.bookingDate || new Date().toISOString().slice(0, 10)
+    ]);
+  });
+
+  // Create CSV content
+  const csvContent = excelData.map(row => 
+    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+  ).join('\n');
+
+  // Create and download file
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const filename = `SB_STAR_LAWN_All_Bookings_${currentDate}.csv`;
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Show success message
+  alert(`✅ Complete booking data exported successfully!\n\nFile: ${filename}\nRecords: ${allBookings.length} bookings\n\nIncludes: Active, Past, and Cancelled bookings`);
+}
+
+// Add event listeners for Excel export buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const exportBtn = $('#exportToExcelBtn');
+  const exportAllBtn = $('#exportAllToExcelBtn');
+  const saveDatabaseBtn = $('#saveDatabaseBtn');
+  
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportToExcel);
+  }
+  
+  if (exportAllBtn) {
+    exportAllBtn.addEventListener('click', exportAllBookingsToExcel);
+  }
+  
+  if (saveDatabaseBtn) {
+    saveDatabaseBtn.addEventListener('click', () => {
+      syncBookingsWithDatabase();
+      alert('✅ All booking data saved to Excel database!');
+    });
+  }
+  
+  // Initialize database system
+  initializeDatabase();
+});
+
+  const paymentMode = document.getElementById("paymentMode");
+  const qrSection = document.getElementById("qrSection");
+
+  paymentMode.addEventListener("change", function () {
+    if (paymentMode.value === "upi") {
+      qrSection.style.display = "block"; // Show QR code
+    } else {
+      qrSection.style.display = "none"; // Hide QR code
+    }
+  });
+
+  // Initialize the application
+  loadBookings();
+</script>
+
+<!-- JavaScript Modules -->
+<script src="js/i18n.js"></script>
+<script type="module" src="js/main.js"></script>
+<script>
+  // Initialize i18n once DOM is ready
+  document.addEventListener('DOMContentLoaded', function(){
+    if(window.I18N && typeof window.I18N.init === 'function'){
+      window.I18N.init();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+Attached HTML and CSS Context
+
+<section id="upcomingEvents" class="reveal show">
+  <button id="toggleUpcomingEventsBtn" class="btn" style="margin-bottom: 16px;">
+    Show List <i class="fa-solid fa-chevron-down"></i>
+  </button>
+  <div id="upcomingEventsList" style="display: none; flex-direction: column; gap: 10px;">
+    <!-- Upcoming events will be dynamically rendered here -->
+  </div>
+</section>
+
+
+/* Matched Rule from user-agent */
+article, aside, footer, header, hgroup, main, nav, search, section {
+  display: block;
+}
+
+/* Matched Rule from user-agent */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Matched Rule from regular */
+* {
+  box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Matched Rule from regular */
+section {
+  padding: 60px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 60px;
+  padding-right: 24px;
+  padding-bottom: 60px;
+  padding-left: 24px;
+  max-width: 1100px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+}
+
+/* Matched Rule from regular */
+section {
+  padding: 40px 16px;
+  padding-top: 40px;
+  padding-right: 16px;
+  padding-bottom: 40px;
+  padding-left: 16px;
+}
+
+/* Matched Rule from regular */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: .6s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  transition-behavior: normal;
+  transition-duration: 0.6s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  transition-property: all;
+}
+
+/* Matched Rule from regular */
+.reveal.show {
+  opacity: 1;
+  transform: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* Inherited from ancestor level 1 (user-agent) */
+body {
+  display: block;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+* {
+  box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color: var(--ink);
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(101,84,192,.15), transparent 60%),
+      radial-gradient(1200px 800px at 110% 10%, rgba(37,117,252,.12), transparent 60%),
+      linear-gradient(180deg, #f8fafc, #eef2ff 120%);
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  font-family: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background-image: radial-gradient(1200px 600px at 10% -10%, rgba(101, 84, 192, 0.15), transparent 60%), radial-gradient(1200px 800px at 110% 10%, rgba(37, 117, 252, 0.12), transparent 60%), linear-gradient(rgb(248, 250, 252), rgb(238, 242, 255) 120%);
+  background-position-x: initial, initial, initial;
+  background-position-y: initial, initial, initial;
+  background-size: initial, initial, initial;
+  background-repeat: initial, initial, initial;
+  background-attachment: initial, initial, initial;
+  background-origin: initial, initial, initial;
+  background-clip: initial, initial, initial;
+  background-color: initial;
+}
+
+/* Inherited from ancestor level 2 (user-agent) */
+html {
+  display: block;
+}
+
+/* Inherited from ancestor level 2 (user-agent) */
+:root {
+  view-transition-name: root;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+* {
+  box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+html {
+  scroll-behavior: smooth;
+  scroll-behavior: smooth;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+:host, :root {
+  --fa-style-family-brands: "Font Awesome 6 Brands";
+  --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+  --fa-style-family-brands: "Font Awesome 6 Brands";
+  --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+}
+
+/* Inherited from ancestor level 2 (regular) */
+:host, :root {
+  --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+  --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+}
+
+/* Inherited from ancestor level 2 (regular) */
+:host, :root {
+  --fa-style-family-classic: "Font Awesome 6 Free";
+  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+  --fa-style-family-classic: "Font Awesome 6 Free";
+  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+}
+
+/* Inherited from ancestor level 2 (regular) */
+:root {
+  --ink: #0f172a;
+  --muted: #475569;
+  --bg: #0b1020;
+  --brand: #6a11cb;
+  --brand2: #2575fc;
+  --brand3: #22c55e;
+  --card: #ffffff;
+  --glass: rgba(255,255,255,.14);
+  --ring: rgba(37,117,252,.35);
+  --ink: #0f172a;
+  --muted: #475569;
+  --bg: #0b1020;
+  --brand: #6a11cb;
+  --brand2: #2575fc;
+  --brand3: #22c55e;
+  --card: #ffffff;
+  --glass: rgba(255,255,255,.14);
+  --ring: rgba(37,117,252,.35);
+}

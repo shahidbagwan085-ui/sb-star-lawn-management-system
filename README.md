@@ -168,7 +168,7 @@ npx kill-port 3000
 ✅ **Website working**: http://localhost:3000 loads your website  
 ✅ **API working**: http://localhost:3000/api/health shows success message  
 
----
+----
 
 ## 📞 **Support**
 
